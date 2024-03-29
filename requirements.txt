@@ -6,6 +6,7 @@ certifi @ file:///private/tmp/certifi-20240307-4614-15z07l/certifi-2024.2.2
 charset-normalizer==3.3.2
 click @ file:///private/tmp/python-click-20231113-5273-1n9fjmk/click-8.1.7
 distro==1.9.0
+fastapi==0.110.0
 filelock==3.13.3
 fsspec==2024.3.1
 h11==0.14.0
@@ -44,6 +45,7 @@ scipy==1.12.0
 sentence-transformers==2.6.1
 six==1.16.0
 sniffio==1.3.1
+starlette==0.36.3
 sympy==1.12
 tenacity==8.2.3
 threadpoolctl==3.4.0
@@ -54,3 +56,4 @@ transformers==4.39.2
 typing_extensions @ file:///private/tmp/python-typing-extensions-20231008-5404-1unbk9z/typing_extensions-4.8.0
 tzdata==2024.1
 urllib3==2.2.1
+uvicorn==0.29.0
