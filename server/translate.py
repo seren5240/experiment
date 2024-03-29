@@ -1,3 +1,4 @@
+import os
 import sys
 import requests
 
@@ -27,6 +28,23 @@ def main():
     response = requests.post(url, json=payload, headers=headers, params=querystring)
 
     print(response.json())
+
+
+def translate_text(text: str, language: str) -> str:
+    api_key = os.getenv("RAPIDAPI_KEY")
+    querystring = {
+        "to[0]": language,
+        "api-version": "3.0",
+    }
+
+    payload = [{"Text": text}]
+    headers = {
+        "content-type": "application/json",
+        "X-RapidAPI-Key": api_key,
+        "X-RapidAPI-Host": "microsoft-translator-text.p.rapidapi.com",
+    }
+    response = requests.post(url, json=payload, headers=headers, params=querystring)
+    return response.json()[0]["translations"][0]["text"]
 
 
 if __name__ == "__main__":
