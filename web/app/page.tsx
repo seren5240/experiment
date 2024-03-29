@@ -1,4 +1,15 @@
+'use client';
+
+import { useCallback, useRef } from "react";
+
 export default function Home() {
+  // use a ref to get the value of the textarea
+  const inputRef = useRef<HTMLTextAreaElement>(null);
+
+  const translateText = useCallback(() => {
+    console.log(inputRef.current?.value);
+  }, []);
+
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <div className="max-w-5xl w-full flex gap-12 items-start">
@@ -15,6 +26,7 @@ export default function Home() {
               rows={4}
               className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder="Write your thoughts here..."
+              ref={inputRef}
             />
           </div>
           <div className="flex-col items-start justify-between w-full">
@@ -32,7 +44,10 @@ export default function Home() {
           </div>
         </div>
         <div className="flex flex-col h-full gap-8 items-center">
-          <button className="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 text-blue-800 border border-blue-800 rounded shadow">
+          <button
+            className="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 text-blue-800 border border-blue-800 rounded shadow"
+            onClick={translateText}
+          >
             Translate
           </button>
         </div>
