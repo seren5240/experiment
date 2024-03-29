@@ -1,13 +1,28 @@
-'use client';
+"use client";
 
-import { useCallback, useRef } from "react";
+import { API_URL } from "@/config";
+import { useCallback, useRef, useState } from "react";
 
 export default function Home() {
   // use a ref to get the value of the textarea
   const inputRef = useRef<HTMLTextAreaElement>(null);
+  const [output, setOutput] = useState<string>();
 
-  const translateText = useCallback(() => {
-    console.log(inputRef.current?.value);
+  const translateText = useCallback(async () => {
+    const input = inputRef.current?.value;
+    if (!input) {
+      setOutput("");
+      return;
+    }
+    const res = await fetch(`${API_URL}/translate`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ text: input, target_language: "fr" }),
+    });
+    const data = await res.json();
+    setOutput(data.translation);
   }, []);
 
   return (
@@ -36,11 +51,13 @@ export default function Home() {
             >
               Translated text
             </label>
-            <div className="rounded-lg w-full gradient-border">
-              <div className="relative z-10 flex items-center gap-1.5 px-3 py-3">
-                WTF
+            {output !== undefined && (
+              <div className="rounded-lg w-full gradient-border">
+                <div className="relative z-10 flex items-center gap-1.5 px-3 py-3">
+                  {output}
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </div>
         <div className="flex flex-col h-full gap-8 items-center">
