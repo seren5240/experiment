@@ -31,3 +31,35 @@ body {
     text-wrap: balance;
   }
 }
+
+.gradient-border {
+  --borderWidth: 2px;
+  @apply rounded-md relative overflow-hidden;
+}
+
+.gradient-border::before {
+  content: ' ';
+  position: absolute;
+  top: var(--borderWidth);
+  left: var(--borderWidth);
+  bottom: var(--borderWidth);
+  right: var(--borderWidth);
+  width: calc(100% - 2 * var(--borderWidth));
+  height: calc(100% - 2 * var(--borderWidth));
+  z-index: 1;
+  border-radius: 0.28rem;
+  @apply bg-white;
+}
+
+.gradient-border::after {
+  content: ' ';
+  position: absolute;
+  top: calc(-1 * var(--borderWidth));
+  left: calc(-1 * var(--borderWidth));
+  right: calc(-1 * var(--borderWidth));
+  bottom: calc(-1 * var(--borderWidth));
+  background: linear-gradient(60deg, #ffea69, #ff3c38, #392aff, #2a78ff, #1098ad, #07b39b);
+  z-index: 0;
+  background-size: 300% 300%;
+  animation: animatedgradient 3s ease alternate infinite;
+}
