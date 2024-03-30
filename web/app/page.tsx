@@ -1,5 +1,6 @@
 "use client";
 
+import { Button } from "@/components/button";
 import { Languages } from "@/components/languages";
 import { API_URL } from "@/config";
 import { useCallback, useRef, useState } from "react";
@@ -61,13 +62,11 @@ export default function Home() {
             )}
           </div>
         </div>
-        <div className="flex flex-col h-full gap-8 items-center" style={{minWidth: '30%'}}>
-          <button
-            className="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 text-blue-800 border border-blue-800 rounded shadow"
-            onClick={translateText}
-          >
-            Translate
-          </button>
+        <div
+          className="flex flex-col h-full gap-8 items-center"
+          style={{ minWidth: "30%" }}
+        >
+          <Button onClick={translateText}>Translate</Button>
           <Languages />
         </div>
       </div>

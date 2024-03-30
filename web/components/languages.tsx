@@ -2,11 +2,12 @@ import { FR, US } from "country-flag-icons/react/3x2";
 import React, { useState } from "react";
 import { Draggable } from "@hello-pangea/dnd";
 import { Dropdown, DropdownOption } from "./dropdown";
+import { Button } from "./button";
 
 type Language = DropdownOption & {
   code: string;
   icon: React.ComponentType;
-}
+};
 
 const ENGLISH: Language = { name: "English", code: "en", icon: US };
 const SUPPORTED_LANGUAGES = [
@@ -58,9 +59,12 @@ const LanguageItem = ({
 export const Languages = () => {
   const [languages, setLanguages] = useState<Language[]>([]);
   return (
-    <div className="flex flex-col text-sm">
+    <div className="flex flex-col text-sm w-full">
       <label htmlFor="language-selector mb-2">Add a new language</label>
-      <Dropdown options={SUPPORTED_LANGUAGES} />
+      <div className="flex flex-row w-full gap-2">
+        <Dropdown options={SUPPORTED_LANGUAGES} />
+        <Button>Add</Button>
+      </div>
     </div>
   );
 };
