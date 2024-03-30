@@ -9,6 +9,7 @@ export default function Home() {
   // use a ref to get the value of the textarea
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const [output, setOutput] = useState<string>();
+  const [loading, setLoading] = useState(false);
   const [languages, setLanguages] = useState<UniqueLanguage[]>([]);
 
   const translateText = useCallback(async () => {
@@ -17,6 +18,7 @@ export default function Home() {
       setOutput("");
       return;
     }
+    setLoading(true);
     const res = await fetch(`${API_URL}/translate`, {
       method: "POST",
       headers: {
@@ -28,7 +30,8 @@ export default function Home() {
       }),
     });
     const data = await res.json();
-    setOutput(data.translation);
+    setOutput(data.final);
+    setLoading(false);
   }, [languages]);
 
   return (
@@ -70,7 +73,9 @@ export default function Home() {
           className="flex flex-col h-full gap-8 items-center"
           style={{ minWidth: "30%" }}
         >
-          <Button onClick={translateText}>Translate</Button>
+          <Button onClick={translateText} disabled={loading}>
+            Translate
+          </Button>
           <Languages languages={languages} setLanguages={setLanguages} />
         </div>
       </div>
