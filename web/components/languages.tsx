@@ -1,6 +1,11 @@
 import { FR, US } from "country-flag-icons/react/3x2";
-import React, { useState } from "react";
-import { Draggable } from "@hello-pangea/dnd";
+import React, { useCallback, useState } from "react";
+import {
+  DragDropContext,
+  Draggable,
+  Droppable,
+  OnDragEndResponder,
+} from "@hello-pangea/dnd";
 import { Dropdown, DropdownOption } from "./dropdown";
 import { Button } from "./button";
 
@@ -58,8 +63,46 @@ const LanguageItem = ({
 
 export const Languages = () => {
   const [languages, setLanguages] = useState<Language[]>([]);
+
+  const onDragEnd: OnDragEndResponder = useCallback(
+    (result) => {
+      if (!result.destination) {
+        return;
+      }
+
+      if (result.destination.index === result.source.index) {
+        return;
+      }
+
+      const reordered = reorder(
+        languages,
+        result.source.index,
+        result.destination.index
+      );
+
+      setLanguages(reordered);
+    },
+    [languages]
+  );
+
   return (
     <div className="flex flex-col text-sm w-full">
+      <DragDropContext onDragEnd={onDragEnd}>
+        <Droppable droppableId="translate-languages">
+          {(provided) => (
+            <div ref={provided.innerRef} {...provided.droppableProps}>
+              {languages.map((language, index) => (
+                <LanguageItem
+                  key={language.code}
+                  language={language}
+                  index={index}
+                />
+              ))}
+              {provided.placeholder}
+            </div>
+          )}
+        </Droppable>
+      </DragDropContext>
       <label htmlFor="language-selector mb-2">Add a new language</label>
       <div className="flex flex-row w-full gap-2">
         <Dropdown options={SUPPORTED_LANGUAGES} />
