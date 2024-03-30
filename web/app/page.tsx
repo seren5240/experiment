@@ -6,7 +6,6 @@ import { API_URL } from "@/config";
 import { useCallback, useRef, useState } from "react";
 
 export default function Home() {
-  // use a ref to get the value of the textarea
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const [output, setOutput] = useState<string>();
   const [loading, setLoading] = useState(false);
