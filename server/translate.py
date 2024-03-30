@@ -51,7 +51,7 @@ async def translate_text(text: str, language: str, from_language: str) -> str:
     response = await session.post(
         url, json=payload, headers=headers, params=querystring
     )
-    return response.json()[0]["translations"][0]["text"]
+    return (await response.json())[0]["translations"][0]["text"]
 
 
 if __name__ == "__main__":
