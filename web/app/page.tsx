@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/button";
-import { Languages } from "@/components/languages";
+import { Languages, UniqueLanguage } from "@/components/languages";
 import { API_URL } from "@/config";
 import { useCallback, useRef, useState } from "react";
 
@@ -9,6 +9,7 @@ export default function Home() {
   // use a ref to get the value of the textarea
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const [output, setOutput] = useState<string>();
+  const [languages, setLanguages] = useState<UniqueLanguage[]>([]);
 
   const translateText = useCallback(async () => {
     const input = inputRef.current?.value;
@@ -21,16 +22,19 @@ export default function Home() {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ text: input, target_languages: ["fr"] }),
+      body: JSON.stringify({
+        text: input,
+        target_languages: languages.map((l) => l.code),
+      }),
     });
     const data = await res.json();
     setOutput(data.translation);
-  }, []);
+  }, [languages]);
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <div className="max-w-5xl w-full flex gap-12 items-start">
-        <div className="z-10 max-w-5xl w-full items-center justify-between font-sans text-sm lg:flex flex-col gap-12">
+        <div className="z-10 max-w-5xl w-full items-center justify-between font-sans text-sm lg:flex flex-col gap-12 flex">
           <div className="flex-col items-start justify-between w-full">
             <label
               htmlFor="message"
@@ -67,7 +71,7 @@ export default function Home() {
           style={{ minWidth: "30%" }}
         >
           <Button onClick={translateText}>Translate</Button>
-          <Languages />
+          <Languages languages={languages} setLanguages={setLanguages} />
         </div>
       </div>
     </main>

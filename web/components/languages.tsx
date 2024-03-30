@@ -9,12 +9,13 @@ import {
 import { Dropdown, DropdownOption } from "./dropdown";
 import { Button } from "./button";
 import { Hamburger } from "./hamburger";
+import { TrashIcon } from "@heroicons/react/16/solid";
 
 type Language = DropdownOption & {
   code: string;
   icon: React.ComponentType;
 };
-type UniqueLanguage = Language & {
+export type UniqueLanguage = Language & {
   id: string;
 };
 
@@ -43,9 +44,11 @@ const reorder = <T extends unknown>(
 const LanguageItem = ({
   language,
   index,
+  onDelete,
 }: {
   language: UniqueLanguage;
   index: number;
+  onDelete: (id: string) => void;
 }) => {
   const Icon = language.icon;
   return (
@@ -55,23 +58,36 @@ const LanguageItem = ({
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
-          className="flex flex-row gap-4 items-center p-2 text-lg cursor-grab"
+          className="flex flex-row items-center justify-between"
         >
-          <Hamburger />
-          <div className="flex flex-row gap-2">
-            <div className="min-w-8 self-center">
-              <Icon />
+          <div className="flex flex-row gap-4 items-center p-2 text-lg cursor-grab grow">
+            <Hamburger />
+            <div className="flex flex-row gap-2">
+              <div className="min-w-8 self-center">
+                <Icon />
+              </div>
+              <p>{language.name}</p>
             </div>
-            <p>{language.name}</p>
           </div>
+          <TrashIcon
+            className="h-6 w-6 text-blue-800"
+            onClick={() => {
+              onDelete(language.id);
+            }}
+          />
         </div>
       )}
     </Draggable>
   );
 };
 
-export const Languages = () => {
-  const [languages, setLanguages] = useState<UniqueLanguage[]>([]);
+export const Languages = ({
+  languages,
+  setLanguages,
+}: {
+  languages: UniqueLanguage[];
+  setLanguages: React.Dispatch<React.SetStateAction<UniqueLanguage[]>>;
+}) => {
   const [selected, setSelected] = useState<DropdownOption>();
 
   const onDragEnd: OnDragEndResponder = useCallback(
@@ -92,7 +108,7 @@ export const Languages = () => {
 
       setLanguages(reordered);
     },
-    [languages]
+    [languages, setLanguages]
   );
 
   const onAdd = useCallback(() => {
@@ -106,7 +122,14 @@ export const Languages = () => {
       ...languages,
       { ...language, id: `language-${languages.length}` },
     ]);
-  }, [languages, selected]);
+  }, [languages, selected, setLanguages]);
+
+  const onDelete = useCallback(
+    (id: string) => {
+      setLanguages(languages.filter((lang) => lang.id !== id));
+    },
+    [languages, setLanguages]
+  );
 
   return (
     <div className="flex flex-col text-sm w-full">
@@ -119,6 +142,7 @@ export const Languages = () => {
                   key={language.id}
                   language={language}
                   index={index}
+                  onDelete={onDelete}
                 />
               ))}
               {provided.placeholder}
