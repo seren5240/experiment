@@ -1,13 +1,20 @@
+aiodns==3.1.1
+aiohttp==3.9.3
+aiosignal==1.3.1
 annotated-types==0.6.0
 anyio==4.3.0
+attrs==23.2.0
 backoff==2.2.1
 boilerpy3==1.0.7
+Brotli==1.1.0
 certifi @ file:///private/tmp/certifi-20240307-4614-15z07l/certifi-2024.2.2
+cffi==1.16.0
 charset-normalizer==3.3.2
 click @ file:///private/tmp/python-click-20231113-5273-1n9fjmk/click-8.1.7
 distro==1.9.0
 fastapi==0.110.0
 filelock==3.13.3
+frozenlist==1.4.1
 fsspec==2024.3.1
 h11==0.14.0
 haystack-ai==2.0.0
@@ -23,6 +30,7 @@ MarkupSafe==2.1.5
 monotonic==1.6
 more-itertools==10.2.0
 mpmath==1.3.0
+multidict==6.0.5
 networkx==3.2.1
 numpy==1.26.4
 openai==1.14.3
@@ -31,6 +39,9 @@ pandas==2.2.1
 pillow==10.2.0
 posthog==3.5.0
 protobuf==4.23.4
+psycopg2-binary==2.9.9
+pycares==4.4.0
+pycparser==2.22
 pydantic==2.6.4
 pydantic_core==2.16.3
 Pygments @ file:///private/tmp/pygments-20231121-5079-e7uuzt/pygments-2.17.2
@@ -59,3 +70,4 @@ typing_extensions @ file:///private/tmp/python-typing-extensions-20231008-5404-1
 tzdata==2024.1
 urllib3==2.2.1
 uvicorn==0.29.0
+yarl==1.9.4
