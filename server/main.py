@@ -70,6 +70,7 @@ async def translate(request: TranslationRequest) -> TranslationResponse:
     session.add(translation)
     session.commit()
     return {
+        "id": id,
         "original": request.text,
         "final": text,
         "steps": steps,
