@@ -8,6 +8,7 @@ import {
 } from "@hello-pangea/dnd";
 import { Dropdown, DropdownOption } from "./dropdown";
 import { Button } from "./button";
+import { Hamburger } from "./hamburger";
 
 type Language = DropdownOption & {
   code: string;
@@ -54,12 +55,15 @@ const LanguageItem = ({
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
-          className="flex flex-row gap-2 items-center p-2"
+          className="flex flex-row gap-4 items-center p-2 text-lg cursor-grab"
         >
-          <div className="min-w-6 self-center">
-            <Icon />
+          <Hamburger />
+          <div className="flex flex-row gap-2">
+            <div className="min-w-8 self-center">
+              <Icon />
+            </div>
+            <p>{language.name}</p>
           </div>
-          <p>{language.name}</p>
         </div>
       )}
     </Draggable>
