@@ -3,9 +3,12 @@
 import { Button } from "@/components/button";
 import { Languages, UniqueLanguage } from "@/components/languages";
 import { API_URL } from "@/config";
+import { Brand } from "@/utils";
 import { useCallback, useRef, useState } from "react";
 
+type Uuid = Brand<string, "Uuid">;
 type TranslationResponse = {
+  id: Uuid;
   original: string;
   final: string;
   steps: {
