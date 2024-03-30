@@ -61,7 +61,7 @@ export default function Home() {
             )}
           </div>
         </div>
-        <div className="flex flex-col h-full gap-8 items-center">
+        <div className="flex flex-col h-full gap-8 items-center" style={{minWidth: '30%'}}>
           <button
             className="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 text-blue-800 border border-blue-800 rounded shadow"
             onClick={translateText}
