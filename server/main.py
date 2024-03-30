@@ -49,7 +49,7 @@ async def translate(request: TranslationRequest) -> TranslationResponse:
     text = request.text
     steps = []
     for i in range(len(request.target_languages)):
-        text = translate_text(
+        text = await translate_text(
             text,
             request.target_languages[i],
             request.target_languages[i - 1] if i > 0 else "en",

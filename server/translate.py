@@ -1,11 +1,11 @@
 import os
 import sys
-import requests
+import aiohttp
 
 url = "https://microsoft-translator-text.p.rapidapi.com/translate"
 
 
-def main():
+async def main():
     if len(sys.argv) < 2:
         print("Please provide an API key")
         sys.exit()
@@ -25,12 +25,14 @@ def main():
         "X-RapidAPI-Host": "microsoft-translator-text.p.rapidapi.com",
     }
 
-    response = requests.post(url, json=payload, headers=headers, params=querystring)
+    response = await aiohttp.post(
+        url, json=payload, headers=headers, params=querystring
+    )
 
     print(response.json())
 
 
-def translate_text(text: str, language: str, from_language: str) -> str:
+async def translate_text(text: str, language: str, from_language: str) -> str:
     api_key = os.getenv("RAPIDAPI_KEY")
     querystring = {
         "from": from_language,
@@ -44,7 +46,11 @@ def translate_text(text: str, language: str, from_language: str) -> str:
         "X-RapidAPI-Key": api_key,
         "X-RapidAPI-Host": "microsoft-translator-text.p.rapidapi.com",
     }
-    response = requests.post(url, json=payload, headers=headers, params=querystring)
+
+    session = aiohttp.ClientSession()
+    response = await session.post(
+        url, json=payload, headers=headers, params=querystring
+    )
     return response.json()[0]["translations"][0]["text"]
 
 
