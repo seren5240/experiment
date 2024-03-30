@@ -9,12 +9,19 @@ export default function Home() {
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const [output, setOutput] = useState<string>();
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string>();
   const [languages, setLanguages] = useState<UniqueLanguage[]>([]);
 
   const translateText = useCallback(async () => {
+    setError(undefined);
+    setOutput(undefined);
     const input = inputRef.current?.value;
     if (!input) {
-      setOutput("");
+      setError("Enter text to translate");
+      return;
+    }
+    if (languages.length === 0) {
+      setError("Select at least one language to translate to");
       return;
     }
     setLoading(true);
@@ -59,6 +66,11 @@ export default function Home() {
             >
               Translated text
             </label>
+            {error !== undefined && (
+              <div className="rounded-lg w-full bg-red-600 p-3 text-white">
+                {error}
+              </div>
+            )}
             {output !== undefined && (
               <div className="rounded-lg w-full gradient-border">
                 <div className="relative z-10 flex items-center gap-1.5 px-3 py-3">
