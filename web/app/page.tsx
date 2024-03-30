@@ -5,16 +5,26 @@ import { Languages, UniqueLanguage } from "@/components/languages";
 import { API_URL } from "@/config";
 import { useCallback, useRef, useState } from "react";
 
+type TranslationResponse = {
+  original: string;
+  final: string;
+  steps: {
+    language: string;
+    text: string;
+  }[];
+  similarity: number;
+};
+
 export default function Home() {
   const inputRef = useRef<HTMLTextAreaElement>(null);
-  const [output, setOutput] = useState<string>();
+  const [response, setResponse] = useState<TranslationResponse>();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string>();
   const [languages, setLanguages] = useState<UniqueLanguage[]>([]);
 
   const translateText = useCallback(async () => {
     setError(undefined);
-    setOutput(undefined);
+    setResponse(undefined);
     const input = inputRef.current?.value;
     if (!input) {
       setError("Enter text to translate");
@@ -35,15 +45,15 @@ export default function Home() {
         target_languages: languages.map((l) => l.code),
       }),
     });
-    const data = await res.json();
-    setOutput(data.final);
+    const data: TranslationResponse = await res.json();
+    setResponse(data);
     setLoading(false);
   }, [languages]);
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <div className="max-w-5xl w-full flex gap-12 items-start">
-        <div className="z-10 max-w-5xl w-full items-center justify-between font-sans text-sm lg:flex flex-col gap-12 flex">
+        <div className="z-10 max-w-5xl w-full items-start justify-between font-sans text-sm lg:flex flex-col gap-12 flex">
           <div className="flex-col items-start justify-between w-full">
             <label
               htmlFor="message"
@@ -60,10 +70,7 @@ export default function Home() {
             />
           </div>
           <div className="flex-col items-start justify-between w-full">
-            <label
-              htmlFor="message"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            >
+            <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
               Translated text
             </label>
             {error !== undefined && (
@@ -71,11 +78,16 @@ export default function Home() {
                 {error}
               </div>
             )}
-            {output !== undefined && (
-              <div className="rounded-lg w-full gradient-border">
-                <div className="relative z-10 flex items-center gap-1.5 px-3 py-3">
-                  {output}
+            {response !== undefined && (
+              <div className="flex flex-col items-start justify-between w-full gap-2">
+                <div className="rounded-lg w-full gradient-border">
+                  <div className="relative z-10 flex items-center gap-1.5 px-3 py-3">
+                    {response.final}
+                  </div>
                 </div>
+                <p className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                  Similarity: {response.similarity.toFixed(4)}
+                </p>
               </div>
             )}
           </div>
