@@ -87,7 +87,9 @@ export const Languages = () => {
   );
 
   const onAdd = useCallback(() => {
-    const language = SUPPORTED_LANGUAGES.find((lang) => lang.name === selected?.name);
+    const language = SUPPORTED_LANGUAGES.find(
+      (lang) => lang.name === selected?.name
+    );
     if (!language) {
       return;
     }
@@ -112,10 +114,18 @@ export const Languages = () => {
           )}
         </Droppable>
       </DragDropContext>
-      <label htmlFor="language-selector mb-2">Add a new language</label>
+      <label htmlFor="language-selector" className="mb-1 mt-5">
+        Add a new language
+      </label>
       <div className="flex flex-row w-full gap-2">
-        <Dropdown options={SUPPORTED_LANGUAGES} selected={selected} setSelected={setSelected} />
-        <Button disabled={!selected} onClick={onAdd}>Add</Button>
+        <Dropdown
+          options={SUPPORTED_LANGUAGES}
+          selected={selected}
+          setSelected={setSelected}
+        />
+        <Button disabled={!selected} onClick={onAdd}>
+          Add
+        </Button>
       </div>
     </div>
   );
