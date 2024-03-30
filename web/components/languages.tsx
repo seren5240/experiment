@@ -13,6 +13,9 @@ type Language = DropdownOption & {
   code: string;
   icon: React.ComponentType;
 };
+type UniqueLanguage = Language & {
+  id: string;
+};
 
 const ENGLISH: Language = { name: "English", code: "en", icon: US };
 const SUPPORTED_LANGUAGES = [
@@ -40,21 +43,23 @@ const LanguageItem = ({
   language,
   index,
 }: {
-  language: Language;
+  language: UniqueLanguage;
   index: number;
 }) => {
   const Icon = language.icon;
   return (
-    <Draggable draggableId={`language-${index}`} index={index}>
+    <Draggable draggableId={language.id} index={index}>
       {(provided) => (
         <div
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
-          className="flex flex-col gap-2 items-center"
+          className="flex flex-row gap-2 items-center p-2"
         >
+          <div className="min-w-6 self-center">
+            <Icon />
+          </div>
           <p>{language.name}</p>
-          <Icon />
         </div>
       )}
     </Draggable>
@@ -62,7 +67,7 @@ const LanguageItem = ({
 };
 
 export const Languages = () => {
-  const [languages, setLanguages] = useState<Language[]>([]);
+  const [languages, setLanguages] = useState<UniqueLanguage[]>([]);
   const [selected, setSelected] = useState<DropdownOption>();
 
   const onDragEnd: OnDragEndResponder = useCallback(
@@ -93,7 +98,10 @@ export const Languages = () => {
     if (!language) {
       return;
     }
-    setLanguages([...languages, language]);
+    setLanguages([
+      ...languages,
+      { ...language, id: `language-${languages.length}` },
+    ]);
   }, [languages, selected]);
 
   return (
@@ -104,7 +112,7 @@ export const Languages = () => {
             <div ref={provided.innerRef} {...provided.droppableProps}>
               {languages.map((language, index) => (
                 <LanguageItem
-                  key={language.code}
+                  key={language.id}
                   language={language}
                   index={index}
                 />
