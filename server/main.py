@@ -1,8 +1,11 @@
 from typing import List
+import uuid
 from fastapi import FastAPI
 from pydantic import BaseModel
 from translate import translate_text
 from similarity import compute_similarity
+from db import session
+from model.base import Translation
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
 import os
@@ -56,6 +59,16 @@ async def translate(request: TranslationRequest) -> TranslationResponse:
         )
         steps.append(TranslationStep(text=text, language=request.target_languages[i]))
     similarity = compute_similarity(request.text, text)
+    id = str(uuid.uuid4())
+    translation = Translation(
+        id=id,
+        original=request.text,
+        final=text,
+        steps=[step.dict() for step in steps],
+        similarity=similarity,
+    )
+    session.add(translation)
+    session.commit()
     return {
         "original": request.text,
         "final": text,
