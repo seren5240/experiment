@@ -8,14 +8,14 @@ export type DropdownOption = {
 
 export const Dropdown = ({
   options,
-  defaultOption,
+  selected,
+  setSelected,
 }: {
   options: DropdownOption[];
-  defaultOption?: string;
+    selected: DropdownOption | undefined;
+    setSelected: React.Dispatch<React.SetStateAction<DropdownOption | undefined>>;
 }) => {
   const [open, setOpen] = useState(false);
-  const found = options.find((option) => option.name === defaultOption);
-  const [selected, setSelected] = useState<DropdownOption | undefined>(found);
 
   return (
     <ClickAwayListener onClickAway={() => setOpen(false)}>

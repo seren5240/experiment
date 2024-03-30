@@ -63,6 +63,7 @@ const LanguageItem = ({
 
 export const Languages = () => {
   const [languages, setLanguages] = useState<Language[]>([]);
+  const [selected, setSelected] = useState<DropdownOption>();
 
   const onDragEnd: OnDragEndResponder = useCallback(
     (result) => {
@@ -85,6 +86,14 @@ export const Languages = () => {
     [languages]
   );
 
+  const onAdd = useCallback(() => {
+    const language = SUPPORTED_LANGUAGES.find((lang) => lang.name === selected?.name);
+    if (!language) {
+      return;
+    }
+    setLanguages([...languages, language]);
+  }, [languages, selected]);
+
   return (
     <div className="flex flex-col text-sm w-full">
       <DragDropContext onDragEnd={onDragEnd}>
@@ -105,8 +114,8 @@ export const Languages = () => {
       </DragDropContext>
       <label htmlFor="language-selector mb-2">Add a new language</label>
       <div className="flex flex-row w-full gap-2">
-        <Dropdown options={SUPPORTED_LANGUAGES} />
-        <Button>Add</Button>
+        <Dropdown options={SUPPORTED_LANGUAGES} selected={selected} setSelected={setSelected} />
+        <Button disabled={!selected} onClick={onAdd}>Add</Button>
       </div>
     </div>
   );
