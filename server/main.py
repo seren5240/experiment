@@ -1,3 +1,4 @@
+from typing import List
 from fastapi import FastAPI
 from pydantic import BaseModel
 from translate import translate_text
@@ -27,10 +28,16 @@ async def root():
 
 class TranslationRequest(BaseModel):
     text: str
-    target_language: str
+    target_languages: List[str]
 
 
 @app.post("/translate")
 async def translate(request: TranslationRequest):
-    output = translate_text(request.text, request.target_language)
-    return {"translation": output}
+    text = request.text
+    for i in range(len(request.target_languages)):
+        text = translate_text(
+            text,
+            request.target_languages[i],
+            request.target_languages[i - 1] if i > 0 else "en",
+        )
+    return {"translation": text}

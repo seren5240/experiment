@@ -1,5 +1,6 @@
 "use client";
 
+import { Languages } from "@/components/languages";
 import { API_URL } from "@/config";
 import { useCallback, useRef, useState } from "react";
 
@@ -19,7 +20,7 @@ export default function Home() {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ text: input, target_language: "fr" }),
+      body: JSON.stringify({ text: input, target_languages: ["fr"] }),
     });
     const data = await res.json();
     setOutput(data.translation);
@@ -67,6 +68,7 @@ export default function Home() {
           >
             Translate
           </button>
+          <Languages />
         </div>
       </div>
     </main>

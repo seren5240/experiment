@@ -30,9 +30,10 @@ def main():
     print(response.json())
 
 
-def translate_text(text: str, language: str) -> str:
+def translate_text(text: str, language: str, from_language: str) -> str:
     api_key = os.getenv("RAPIDAPI_KEY")
     querystring = {
+        "from": from_language,
         "to[0]": language,
         "api-version": "3.0",
     }
