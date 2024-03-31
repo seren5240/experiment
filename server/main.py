@@ -2,6 +2,7 @@ from typing import List
 import uuid
 from fastapi import FastAPI, Depends
 from pydantic import BaseModel
+from model.translation import fetch_translation
 from translate import translate_text
 from similarity import compute_similarity
 from model.db import get_db_session
@@ -83,11 +84,13 @@ async def translate(
 
 
 @app.get("/translation/{id}")
-async def get_translation(id: str) -> TranslationResponse:
-    translation = get_translation(id)
+async def get_translation(
+    id: str, db: AsyncSession = Depends(get_db_session)
+) -> TranslationResponse:
+    translation = await fetch_translation(id, db)
     steps = [TranslationStep(**step) for step in translation.steps]
     return {
-        "id": translation.id,
+        "id": str(translation.id),
         "original": translation.original,
         "final": translation.final,
         "steps": steps,

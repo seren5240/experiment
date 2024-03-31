@@ -3,33 +3,29 @@
 import { Button } from "@/components/button";
 import { Languages, UniqueLanguage } from "@/components/languages";
 import { API_URL } from "@/config";
-import { Brand } from "@/utils";
+import { TranslationResponse } from "@/hooks/types";
+import { useStoredTranslation } from "@/hooks/useTranslation";
 import { useSearchParams } from "next/navigation";
-import { useCallback, useRef, useState } from "react";
-
-type Uuid = Brand<string, "Uuid">;
-type TranslationResponse = {
-  id: Uuid;
-  original: string;
-  final: string;
-  steps: {
-    language: string;
-    text: string;
-  }[];
-  similarity: number;
-};
+import { useCallback, useMemo, useRef, useState } from "react";
 
 export default function Home() {
   const inputRef = useRef<HTMLTextAreaElement>(null);
-  const [response, setResponse] = useState<TranslationResponse>();
+  const [freshResponse, setFreshResponse] = useState<TranslationResponse>();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string>();
   const [languages, setLanguages] = useState<UniqueLanguage[]>([]);
   const searchParams = useSearchParams();
+  const { translation, loading: loadingStored } = useStoredTranslation({
+    id: searchParams.get("id") ?? undefined,
+    skip: !!freshResponse,
+  });
+  const response = useMemo(() => freshResponse ?? translation, [
+    freshResponse,
+    translation,
+  ]);
 
   const translateText = useCallback(async () => {
     setError(undefined);
-    setResponse(undefined);
     const input = inputRef.current?.value;
     if (!input) {
       setError("Enter text to translate");
@@ -54,7 +50,7 @@ export default function Home() {
     const params = new URLSearchParams(searchParams.toString());
     params.set("id", data.id);
     window.history.pushState(null, "", `?${params.toString()}`);
-    setResponse(data);
+    setFreshResponse(data);
     setLoading(false);
   }, [languages, searchParams]);
 
@@ -75,7 +71,7 @@ export default function Home() {
               className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder="Write your input here..."
               ref={inputRef}
-              disabled={loading}
+              disabled={loading || loadingStored}
             />
             {error !== undefined && (
               <div
@@ -121,7 +117,7 @@ export default function Home() {
           className="flex flex-col h-full gap-8 items-center"
           style={{ minWidth: "30%" }}
         >
-          <Button onClick={translateText} disabled={loading}>
+          <Button onClick={translateText} disabled={loading || loadingStored}>
             Translate
           </Button>
           <Languages languages={languages} setLanguages={setLanguages} />

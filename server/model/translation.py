@@ -1,8 +1,6 @@
-import sys
-from db import session
 from model.base import Translation
+from sqlalchemy.ext.asyncio import AsyncSession
 
 
-def get_translation(id: str) -> Translation:
-    id = sys.argv[1]
+def fetch_translation(id: str, session: AsyncSession) -> Translation:
     return session.get(Translation, id)
