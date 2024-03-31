@@ -45,7 +45,7 @@ export const Dropdown = ({
 
         <div
           className={`z-10 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 ${
-            open ? "absolute" : "hidden"
+            open ? "absolute mt-2" : "hidden"
           }`}
           role="menu"
         >
