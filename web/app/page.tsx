@@ -19,9 +19,15 @@ export default function Home() {
     id: searchParams.get("id") ?? undefined,
     skip: !!freshResponse,
   });
-  const response = useMemo(() => freshResponse ?? translation, [
+  const response = useMemo(() => {
+    if (loading) {
+      return undefined;
+    }
+    return freshResponse ?? translation;
+  }, [
     freshResponse,
     translation,
+    loading,
   ]);
 
   const translateText = useCallback(async () => {
