@@ -24,11 +24,7 @@ export default function Home() {
       return undefined;
     }
     return freshResponse ?? translation;
-  }, [
-    freshResponse,
-    translation,
-    loading,
-  ]);
+  }, [freshResponse, translation, loading]);
 
   const translateText = useCallback(async () => {
     setError(undefined);
@@ -49,7 +45,7 @@ export default function Home() {
       },
       body: JSON.stringify({
         text: input,
-        target_languages: languages.map((l) => l.code),
+        target_languages: [...languages.map((l) => l.code), 'en'],
       }),
     });
     const data: TranslationResponse = await res.json();
@@ -64,6 +60,17 @@ export default function Home() {
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <div className="max-w-5xl w-full flex gap-12 items-start">
         <div className="z-10 max-w-5xl w-full items-start justify-between font-sans text-sm lg:flex flex-col gap-12 flex">
+          <p>
+            This is a tool to see the semantic similarity of English phrases
+            after bounced through multiple languages using Microsoft&apos;s
+            Azure Translator API. The final transformation, after translating
+            through all selected languages, will always be back to English, so
+            it is not necessary to select English as the final language on the
+            right sidebar. For example, if you select French, English, and
+            Spanish in that order, then the full order of translation will go
+            English &gt; French &gt; English &gt; Spanish &gt; English, with the
+            final English output displayed under &quot;Final text&quot;.
+          </p>
           <div className="flex-col items-start justify-between w-full">
             <label
               htmlFor="message"
@@ -103,7 +110,7 @@ export default function Home() {
           </div>
           <div className="flex-col items-start justify-between w-full">
             <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-              Translated text
+              Final text
             </label>
             {response !== undefined && (
               <div className="flex flex-col items-start justify-between w-full gap-2">

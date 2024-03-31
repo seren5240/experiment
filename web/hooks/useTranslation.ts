@@ -10,7 +10,7 @@ export const useStoredTranslation = ({
   skip: boolean;
 }) => {
   const [translation, setTranslation] = useState<TranslationResponse>();
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchTranslation = async () => {
