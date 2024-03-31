@@ -42,6 +42,7 @@ class TranslationStep(BaseModel):
 
 
 class TranslationResponse(BaseModel):
+    id: str
     original: str
     final: str
     steps: List[TranslationStep]

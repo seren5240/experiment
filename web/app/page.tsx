@@ -4,6 +4,7 @@ import { Button } from "@/components/button";
 import { Languages, UniqueLanguage } from "@/components/languages";
 import { API_URL } from "@/config";
 import { Brand } from "@/utils";
+import { useSearchParams } from "next/navigation";
 import { useCallback, useRef, useState } from "react";
 
 type Uuid = Brand<string, "Uuid">;
@@ -24,6 +25,7 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string>();
   const [languages, setLanguages] = useState<UniqueLanguage[]>([]);
+  const searchParams = useSearchParams();
 
   const translateText = useCallback(async () => {
     setError(undefined);
@@ -49,9 +51,12 @@ export default function Home() {
       }),
     });
     const data: TranslationResponse = await res.json();
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("id", data.id);
+    window.history.pushState(null, "", `?${params.toString()}`);
     setResponse(data);
     setLoading(false);
-  }, [languages]);
+  }, [languages, searchParams]);
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
@@ -77,7 +82,7 @@ export default function Home() {
                 className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mt-3"
                 role="alert"
               >
-                <strong className="font-bold">Error:{' '}</strong>
+                <strong className="font-bold">Error: </strong>
                 <span className="block sm:inline">{error}</span>
               </div>
             )}
