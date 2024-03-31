@@ -3,6 +3,8 @@ aiohttp==3.9.3
 aiosignal==1.3.1
 annotated-types==0.6.0
 anyio==4.3.0
+async-timeout==4.0.3
+asyncpg==0.29.0
 attrs==23.2.0
 backoff==2.2.1
 boilerpy3==1.0.7
@@ -16,6 +18,7 @@ fastapi==0.110.0
 filelock==3.13.3
 frozenlist==1.4.1
 fsspec==2024.3.1
+greenlet==3.0.3
 h11==0.14.0
 haystack-ai==2.0.0
 haystack-bm25==1.0.2

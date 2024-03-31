@@ -1,14 +1,15 @@
 from typing import List
 import uuid
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
 from pydantic import BaseModel
 from translate import translate_text
 from similarity import compute_similarity
-from model.db import session
+from model.db import get_db_session
 from model.base import Translation
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
 import os
+from sqlalchemy.ext.asyncio import AsyncSession
 
 # Construct the path to the .env file
 dotenv_path = os.path.join(os.path.dirname(__file__), "..", ".env")
@@ -48,7 +49,9 @@ class TranslationResponse(BaseModel):
 
 
 @app.post("/translate")
-async def translate(request: TranslationRequest) -> TranslationResponse:
+async def translate(
+    request: TranslationRequest, db: AsyncSession = Depends(get_db_session)
+) -> TranslationResponse:
     text = request.text
     steps = []
     for i in range(len(request.target_languages)):
@@ -67,8 +70,8 @@ async def translate(request: TranslationRequest) -> TranslationResponse:
         steps=[step.dict() for step in steps],
         similarity=similarity,
     )
-    session.add(translation)
-    session.commit()
+    db.add(translation)
+    await db.commit()
     return {
         "id": id,
         "original": request.text,

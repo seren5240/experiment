@@ -1,13 +1,24 @@
 import os
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
+from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from model.base import Base
 
-engine = create_engine(os.getenv("DATABASE_URL"))
-session = Session(engine)
+DATABASE_URL = os.getenv("DATABASE_URL")
+async_engine = create_async_engine(DATABASE_URL, echo=True)
+
+AsyncSessionLocal = sessionmaker(
+    autocommit=False, autoflush=False, bind=async_engine, class_=AsyncSession
+)
+
+
+async def get_db_session():
+    async with AsyncSessionLocal() as session:
+        yield session
 
 
 def create_tables():
+    engine = create_engine(DATABASE_URL)
     Base.metadata.create_all(engine)
 
 
