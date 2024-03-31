@@ -4,7 +4,7 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 from translate import translate_text
 from similarity import compute_similarity
-from db import session
+from model.db import session
 from model.base import Translation
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
