@@ -76,3 +76,16 @@ async def translate(request: TranslationRequest) -> TranslationResponse:
         "steps": steps,
         "similarity": similarity,
     }
+
+
+@app.get("/translation/{id}")
+async def get_translation(id: str) -> TranslationResponse:
+    translation = get_translation(id)
+    steps = [TranslationStep(**step) for step in translation.steps]
+    return {
+        "id": translation.id,
+        "original": translation.original,
+        "final": translation.final,
+        "steps": steps,
+        "similarity": translation.similarity,
+    }
