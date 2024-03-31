@@ -44,7 +44,7 @@ export const Dropdown = ({
         </button>
 
         <div
-          className={`z-10 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 ${
+          className={`z-10 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 max-h-72 overflow-auto ${
             open ? "absolute mt-2" : "hidden"
           }`}
           role="menu"
