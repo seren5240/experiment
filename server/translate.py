@@ -25,7 +25,8 @@ async def main():
         "X-RapidAPI-Host": "microsoft-translator-text.p.rapidapi.com",
     }
 
-    response = await aiohttp.post(
+    session = aiohttp.ClientSession()
+    response = await session.post(
         url, json=payload, headers=headers, params=querystring
     )
 
