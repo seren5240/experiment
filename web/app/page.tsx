@@ -70,7 +70,16 @@ export default function Home() {
           French &gt; English &gt; Spanish &gt; English, with the final English
           output displayed under &quot;Final text&quot;.
         </p>
-        <div className="max-w-5xl w-full flex gap-12 items-start items-start">
+        <div className="max-w-5xl w-full flex flex-col lg:flex-row gap-12 items-start items-start">
+          <div
+            className="flex flex-col h-full gap-8 items-center"
+            style={{ minWidth: "30%" }}
+          >
+            <Button onClick={translateText} disabled={loading || loadingStored}>
+              Translate
+            </Button>
+            <Languages languages={languages} setLanguages={setLanguages} />
+          </div>
           <div className="z-10 max-w-5xl w-full items-start justify-between font-sans text-sm lg:flex flex-col gap-12 flex">
             <div className="flex-col items-start justify-between w-full">
               <label
@@ -126,15 +135,6 @@ export default function Home() {
                 </div>
               )}
             </div>
-          </div>
-          <div
-            className="flex flex-col h-full gap-8 items-center"
-            style={{ minWidth: "30%" }}
-          >
-            <Button onClick={translateText} disabled={loading || loadingStored}>
-              Translate
-            </Button>
-            <Languages languages={languages} setLanguages={setLanguages} />
           </div>
         </div>
       </div>
