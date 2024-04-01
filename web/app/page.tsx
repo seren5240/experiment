@@ -82,7 +82,7 @@ export default function Home() {
             </Button>
             <Languages languages={languages} setLanguages={setLanguages} />
           </div>
-          <div className="z-10 max-w-5xl w-full items-start justify-between font-sans text-sm lg:flex flex-col gap-12 flex">
+          <div className="z-10 max-w-5xl w-full items-start justify-between font-sans text-sm lg:flex flex-col gap-4 flex">
             <div className="flex-col items-start justify-between w-full">
               <label
                 htmlFor="message"
@@ -110,7 +110,7 @@ export default function Home() {
             </div>
             <div className="flex-col items-start justify-between w-full">
               <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                Original text
+                Original text (English)
               </label>
               {(loading || response) && (
                 <div className="rounded-lg w-full gradient-border">
@@ -123,7 +123,7 @@ export default function Home() {
             <Timeline steps={response?.steps} />
             <div className="flex-col items-start justify-between w-full">
               <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                Final text
+                Final text (English)
               </label>
               {response !== undefined && (
                 <div className="flex flex-col items-start justify-between w-full gap-2">
