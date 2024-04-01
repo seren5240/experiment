@@ -1,16 +1,41 @@
 import { TranslationStep } from "@/hooks/types";
 import { languageCodeToName } from "@/utils/languages";
 import { AIButton } from "./button";
+import { useExplainSteps } from "@/hooks/useExplainSteps";
+import { Explainer } from "./explanation";
 
-export const Timeline = ({ steps }: { steps?: TranslationStep[] }) => {
+export const Timeline = ({
+  steps,
+  translation_id,
+}: {
+  steps?: TranslationStep[];
+  translation_id?: string;
+}) => {
+  const { explainStep, explainedSteps } = useExplainSteps({
+    steps,
+    translation_id,
+  });
   const timelineSteps = steps?.slice(0, -1);
-  if (!timelineSteps || timelineSteps.length === 0) {
+  if (!timelineSteps) {
     return null;
   }
   return (
     <ol className="border-s border-neutral-400 dark:border-neutral-500 ml-4">
-      {timelineSteps.map((step) => (
+      {timelineSteps.map((step, i) => (
         <li key={step.text}>
+          <div
+            className={`flex-start flex items-center pb-3 ${
+              i === 0 ? "pt-3" : ""
+            }`}
+          >
+            <div className="-ms-[5px] me-3 bg-neutral-400 dark:bg-neutral-500">
+              <Explainer
+                explainStep={explainStep}
+                explainedSteps={explainedSteps}
+                index={i}
+              />
+            </div>
+          </div>
           <div className="flex-start flex items-center pt-3">
             <div className="-ms-[5px] me-3 h-[9px] w-[9px] rounded-full bg-neutral-400 dark:bg-neutral-500"></div>
             <h4 className="text-sm font-semibold">
@@ -22,13 +47,17 @@ export const Timeline = ({ steps }: { steps?: TranslationStep[] }) => {
               {step.text}
             </p>
           </div>
-          <div className="flex-start flex items-center pb-3">
-            <div className="-ms-[5px] me-3 bg-neutral-400 dark:bg-neutral-500">
-                <AIButton />
-            </div>
-          </div>
         </li>
       ))}
+      <div className="flex-start flex items-center pb-3">
+        <div className="-ms-[5px] me-3 bg-neutral-400 dark:bg-neutral-500">
+          <Explainer
+            explainStep={explainStep}
+            explainedSteps={explainedSteps}
+            index={timelineSteps.length}
+          />
+        </div>
+      </div>
     </ol>
   );
 };

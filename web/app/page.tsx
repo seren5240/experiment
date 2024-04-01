@@ -120,7 +120,7 @@ export default function Home() {
                 </div>
               )}
             </div>
-            <Timeline steps={response?.steps} />
+            <Timeline steps={response?.steps} translation_id={response?.id} />
             <div className="flex-col items-start justify-between w-full">
               <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                 Final text (English)
