@@ -9,7 +9,7 @@ from sqlalchemy.future import select
 from model.db import get_managed_db_session
 
 
-async def fetch_by_translation_id_step_index(
+async def fetch_explanation_by_translation_step(
     translation_id: str, step_index: int, session: AsyncSession
 ) -> StepExplanation | None:
     query = select(StepExplanation).where(
@@ -25,7 +25,7 @@ class TestLanguageMethods(aiounittest.AsyncTestCase):
     async def test_returns_none_if_no_explanation_exists(self):
         random_id = str(uuid.uuid4())
         async with get_managed_db_session() as session:
-            explanation = await fetch_by_translation_id_step_index(
+            explanation = await fetch_explanation_by_translation_step(
                 random_id, 0, session
             )
             self.assertIsNone(explanation)
@@ -54,7 +54,7 @@ class TestLanguageMethods(aiounittest.AsyncTestCase):
                 ),
             )
             await session.commit()
-            fetched = await fetch_by_translation_id_step_index(
+            fetched = await fetch_explanation_by_translation_step(
                 translation_id, step_index, session
             )
             self.assertIsNotNone(fetched)

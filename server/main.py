@@ -8,6 +8,7 @@ from schema import (
     ExplanationRequest,
     ExplanationResponse,
 )
+from model.explanation import fetch_explanation_by_translation_step
 from translate import translate_text
 from similarity import compute_similarity
 from explain import explain
@@ -90,6 +91,14 @@ async def get_translation(
 async def explain_step(
     request: ExplanationRequest, db: AsyncSession = Depends(get_db_session)
 ) -> ExplanationResponse:
+    existing = await fetch_explanation_by_translation_step(
+        request.translation_id, request.step_index, db
+    )
+    if existing:
+        return {
+            "id": str(existing.id),
+            "explanation": existing.explanation,
+        }
     translation = await fetch_translation(request.translation_id, db)
     output_step = TranslationStep(**translation.steps[request.step_index])
     input_step = (
