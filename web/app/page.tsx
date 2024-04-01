@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@/components/button";
+import { AIButton, Button } from "@/components/button";
 import { Languages, UniqueLanguage } from "@/components/languages";
 import { API_URL } from "@/config";
 import { TranslationResponse } from "@/hooks/types";
