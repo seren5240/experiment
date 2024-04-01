@@ -1,6 +1,6 @@
 "use client";
 
-import { AIButton, Button } from "@/components/button";
+import { Button } from "@/components/button";
 import { Languages } from "@/components/languages";
 import { Timeline } from "@/components/timeline";
 import { API_URL } from "@/config";
