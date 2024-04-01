@@ -25,12 +25,12 @@ async def main():
         "X-RapidAPI-Host": "microsoft-translator-text.p.rapidapi.com",
     }
 
-    session = aiohttp.ClientSession()
-    response = await session.post(
-        url, json=payload, headers=headers, params=querystring
-    )
+    async with aiohttp.ClientSession() as session:
+        response = await session.post(
+            url, json=payload, headers=headers, params=querystring
+        )
 
-    print(response.json())
+        print(response.json())
 
 
 async def translate_text(text: str, language: str, from_language: str) -> str:
@@ -48,11 +48,11 @@ async def translate_text(text: str, language: str, from_language: str) -> str:
         "X-RapidAPI-Host": "microsoft-translator-text.p.rapidapi.com",
     }
 
-    session = aiohttp.ClientSession()
-    response = await session.post(
-        url, json=payload, headers=headers, params=querystring
-    )
-    return (await response.json())[0]["translations"][0]["text"]
+    async with aiohttp.ClientSession() as session:
+        response = await session.post(
+            url, json=payload, headers=headers, params=querystring
+        )
+        return (await response.json())[0]["translations"][0]["text"]
 
 
 if __name__ == "__main__":
