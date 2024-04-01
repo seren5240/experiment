@@ -19,7 +19,7 @@ async def explain():
             {
                 "role": "system",
                 "content": """You are an expert translator tasked with breaking down the translation of a document for your client.
-You are tasked with explaining the key considerations that you view as most important as well as identifying any challenges, difficulties or quirks that are relevant in translating between the two given languages in the two snippets.
+You are tasked with identifying any challenges, difficulties or quirks that are relevant in translating between the given languages in the two snippets.
 Explain these challenges in a way that is understandable to a layperson who only speaks English.""",
             },
             {
