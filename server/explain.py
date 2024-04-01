@@ -1,13 +1,14 @@
 import os
+from typing import List, Tuple
 from pydantic import BaseModel
 from instructor import patch
 from openai import OpenAI
 import instructor
 
 
-class UserInfo(BaseModel):
-    name: str
-    age: int
+class Explanation(BaseModel):
+    breakdown: List[Tuple[str, str]]
+    challenges: str
 
 
 def main():
@@ -24,12 +25,20 @@ def main():
     )
     explanation = client.chat.completions.create(
         model="mistralai/mistral-7b-instruct:free",
-        response_model=UserInfo,
-        messages=[{"role": "user", "content": "John Doe is 30 years old."}],
+        response_model=Explanation,
+        messages=[
+            {
+                "role": "system",
+                "content": "You are an expert translator tasked with breaking down the translation of a document for your client. You must perform two tasks: first, you should break down the translation into the smallest logical components, whether that is a word, phrase or a full sentence, that can be matched from one language to the other. Return the breakdown in the form of a list of tuples, where each tuple contains the original text and the translated text. Second, you should identify any challenges, difficulties or quirks that are relevant in translating between the two given languages in the two snippets. Explain these challenges in a way that is understandable to a layperson who only speaks English.",
+            },
+            {
+                "role": "user",
+                "content": "Original text in English: Hey, I just met you\n\nTranslated text in French: Hé, je viens de te rencontrer",
+            },
+        ],
     )
 
-    print(explanation.name)
-    print(explanation.age)
+    print(explanation)
 
 
 if __name__ == "__main__":
