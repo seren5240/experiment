@@ -40,7 +40,7 @@ class StepExplanation(Base):
         ForeignKey("translation.id"),
         nullable=False,
     )
-    step: Mapped[int] = mapped_column(types.Integer, nullable=False)
+    step_index: Mapped[int] = mapped_column(types.Integer, nullable=False)
     explanation: Mapped[str] = mapped_column(types.String, nullable=False)
     created_at: Mapped[datetime] = mapped_column(
         types.DateTime, nullable=False, server_default=text("now()")

@@ -18,3 +18,13 @@ class TranslationResponse(BaseModel):
     final: str
     steps: List[TranslationStep]
     similarity: float
+
+
+class ExplanationRequest(BaseModel):
+    translation_id: str
+    step_index: int
+
+
+class ExplanationResponse(BaseModel):
+    id: str
+    explanation: str

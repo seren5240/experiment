@@ -1,11 +1,18 @@
 import uuid
 from fastapi import FastAPI, Depends
 from model.translation import fetch_translation
-from schema import TranslationRequest, TranslationResponse, TranslationStep
+from schema import (
+    TranslationRequest,
+    TranslationResponse,
+    TranslationStep,
+    ExplanationRequest,
+    ExplanationResponse,
+)
 from translate import translate_text
 from similarity import compute_similarity
+from explain import explain
 from model.db import get_db_session
-from model.base import Translation
+from model.base import Translation, StepExplanation
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
 import os
@@ -76,4 +83,32 @@ async def get_translation(
         "final": translation.final,
         "steps": steps,
         "similarity": translation.similarity,
+    }
+
+
+@app.post("/explain")
+async def explain_step(
+    request: ExplanationRequest, db: AsyncSession = Depends(get_db_session)
+) -> ExplanationResponse:
+    translation = await fetch_translation(request.translation_id, db)
+    output_step = translation.steps[request.step_index]
+    input_step = (
+        translation.steps[request.step_index - 1]
+        if request.step_index > 0
+        else TranslationStep(text=translation.original, language="en")
+    )
+    explanation = await explain(input_step, output_step)
+    id = str(uuid.uuid4())
+    db.add(
+        StepExplanation(
+            id=id,
+            translation_id=translation.id,
+            step_index=request.step_index,
+            explanation=explanation,
+        )
+    )
+    await db.commit()
+    return {
+        "id": id,
+        "explanation": explanation,
     }

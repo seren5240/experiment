@@ -13,7 +13,7 @@ class Explanation(BaseModel):
     )
 
 
-async def explain(input: TranslationStep, output: TranslationStep):
+async def explain(input: TranslationStep, output: TranslationStep) -> str:
     api_key = os.getenv("OPENROUTER_API_KEY")
     input_lang = language_code_to_name(input.language)
     output_lang = language_code_to_name(output.language)
