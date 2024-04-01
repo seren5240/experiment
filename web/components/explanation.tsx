@@ -27,7 +27,7 @@ export const Explainer = ({
   }, [explainedSteps, index]);
 
   return ourExplanation === undefined ? (
-    <div className="-ms-[5px] me-3">
+    <div className="-ms-[5px] me-3 pb-3">
       <AIButton
         onClick={() => {
           explainStep(index);
@@ -43,7 +43,7 @@ export const Explainer = ({
         </h4>
       </div>
       <div className="mb-6 ms-4 mt-2">
-        <p className="mb-3 text-neutral-500 dark:text-neutral-300">
+        <p className="text-neutral-500 dark:text-neutral-300">
           {ourExplanation}
         </p>
       </div>
