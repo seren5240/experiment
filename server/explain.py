@@ -4,6 +4,7 @@ import aiohttp
 from pydantic import BaseModel, Field
 
 from schema import TranslationStep
+from languages import language_code_to_name
 
 
 class Explanation(BaseModel):
@@ -14,7 +15,8 @@ class Explanation(BaseModel):
 
 async def explain(input: TranslationStep, output: TranslationStep):
     api_key = os.getenv("OPENROUTER_API_KEY")
-
+    input_lang = language_code_to_name(input.language)
+    output_lang = language_code_to_name(output.language)
     payload = {
         "model": "mistralai/mistral-7b-instruct:free",
         "messages": [
@@ -26,7 +28,11 @@ Explain these challenges in a way that is understandable to a layperson who only
             },
             {
                 "role": "user",
-                "content": "Original text in English: Hey, I just met you\n\nTranslated text in French: Hé, je viens de te rencontrer",
+                "content": f"""Original text in {input_lang}:
+{input.text}
+
+Translated text in {output_lang}:
+{output.text}""",
             },
         ],
     }
@@ -44,7 +50,10 @@ Explain these challenges in a way that is understandable to a layperson who only
 
 
 async def main():
-    explanation = await explain()
+    explanation = await explain(
+        TranslationStep(text="Hey, I just met you", language="en"),
+        TranslationStep(text="Hé, je viens de te rencontrer", language="fr"),
+    )
     print(explanation)
 
 
