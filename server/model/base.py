@@ -1,5 +1,5 @@
 from datetime import datetime
-from sqlalchemy import text, types, ForeignKey
+from sqlalchemy import UniqueConstraint, text, types, ForeignKey
 from sqlalchemy.orm import DeclarativeBase
 from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
@@ -44,6 +44,12 @@ class StepExplanation(Base):
     explanation: Mapped[str] = mapped_column(types.String, nullable=False)
     created_at: Mapped[datetime] = mapped_column(
         types.DateTime, nullable=False, server_default=text("now()")
+    )
+
+    __table_args__ = (
+        UniqueConstraint(
+            "translation_id", "step_index", name="_translation_step_index_uc"
+        ),
     )
 
     def __repr__(self) -> str:
