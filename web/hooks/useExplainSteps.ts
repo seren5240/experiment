@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { TranslationStep } from "./types";
 import { API_URL } from "@/config";
 
@@ -18,6 +18,12 @@ export const useExplainSteps = ({
   const [explanations, setExplanations] = useState<
     StepWithExplanation[] | undefined
   >(steps);
+
+  useEffect(() => {
+    if (!!steps && !explanations) {
+      setExplanations(steps);
+    }
+  }, [steps, explanations]);
 
   const explainStep = useCallback(
     async (i: number) => {

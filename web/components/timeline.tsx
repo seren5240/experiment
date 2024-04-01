@@ -28,13 +28,13 @@ export const Timeline = ({
               i === 0 ? "pt-3" : ""
             }`}
           >
-            <div className="-ms-[5px] me-3 bg-neutral-400 dark:bg-neutral-500">
-              <Explainer
-                explainStep={explainStep}
-                explainedSteps={explainedSteps}
-                index={i}
-              />
-            </div>
+            {/* <div className="-ms-[5px] me-3"> */}
+            <Explainer
+              explainStep={explainStep}
+              explainedSteps={explainedSteps}
+              index={i}
+            />
+            {/* </div> */}
           </div>
           <div className="flex-start flex items-center pt-3">
             <div className="-ms-[5px] me-3 h-[9px] w-[9px] rounded-full bg-neutral-400 dark:bg-neutral-500"></div>
@@ -50,13 +50,11 @@ export const Timeline = ({
         </li>
       ))}
       <div className="flex-start flex items-center pb-3">
-        <div className="-ms-[5px] me-3 bg-neutral-400 dark:bg-neutral-500">
-          <Explainer
-            explainStep={explainStep}
-            explainedSteps={explainedSteps}
-            index={timelineSteps.length}
-          />
-        </div>
+        <Explainer
+          explainStep={explainStep}
+          explainedSteps={explainedSteps}
+          index={timelineSteps.length}
+        />
       </div>
     </ol>
   );
