@@ -1,10 +1,12 @@
 "use client";
 
 import { AIButton, Button } from "@/components/button";
-import { Languages, UniqueLanguage } from "@/components/languages";
+import { Languages } from "@/components/languages";
+import { Timeline } from "@/components/timeline";
 import { API_URL } from "@/config";
 import { TranslationResponse } from "@/hooks/types";
 import { useStoredTranslation } from "@/hooks/useTranslation";
+import { UniqueLanguage } from "@/utils/languages";
 import { useSearchParams } from "next/navigation";
 import { useCallback, useMemo, useRef, useState } from "react";
 
@@ -118,6 +120,7 @@ export default function Home() {
                 </div>
               )}
             </div>
+            <Timeline steps={response?.steps} />
             <div className="flex-col items-start justify-between w-full">
               <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                 Final text

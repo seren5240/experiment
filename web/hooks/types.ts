@@ -1,13 +1,15 @@
-import { Brand } from "@/utils";
+import { Brand } from "@/utils/types";
 
 type Uuid = Brand<string, "Uuid">;
+
+export type TranslationStep = {
+  language: string;
+  text: string;
+};
 export type TranslationResponse = {
   id: Uuid;
   original: string;
   final: string;
-  steps: {
-    language: string;
-    text: string;
-  }[];
+  steps: TranslationStep[];
   similarity: number;
 };
