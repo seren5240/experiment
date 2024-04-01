@@ -91,9 +91,9 @@ async def explain_step(
     request: ExplanationRequest, db: AsyncSession = Depends(get_db_session)
 ) -> ExplanationResponse:
     translation = await fetch_translation(request.translation_id, db)
-    output_step = translation.steps[request.step_index]
+    output_step = TranslationStep(**translation.steps[request.step_index])
     input_step = (
-        translation.steps[request.step_index - 1]
+        TranslationStep(**translation.steps[request.step_index - 1])
         if request.step_index > 0
         else TranslationStep(text=translation.original, language="en")
     )
