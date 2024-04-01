@@ -3,6 +3,8 @@ import os
 import aiohttp
 from pydantic import BaseModel, Field
 
+from schema import TranslationStep
+
 
 class Explanation(BaseModel):
     challenges: str = Field(
@@ -10,7 +12,7 @@ class Explanation(BaseModel):
     )
 
 
-async def explain():
+async def explain(input: TranslationStep, output: TranslationStep):
     api_key = os.getenv("OPENROUTER_API_KEY")
 
     payload = {

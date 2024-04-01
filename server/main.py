@@ -1,8 +1,7 @@
-from typing import List
 import uuid
 from fastapi import FastAPI, Depends
-from pydantic import BaseModel
 from model.translation import fetch_translation
+from schema import TranslationRequest, TranslationResponse, TranslationStep
 from translate import translate_text
 from similarity import compute_similarity
 from model.db import get_db_session
@@ -30,24 +29,6 @@ app.add_middleware(
 @app.get("/")
 async def root():
     return {"message": "Hello World"}
-
-
-class TranslationRequest(BaseModel):
-    text: str
-    target_languages: List[str]
-
-
-class TranslationStep(BaseModel):
-    text: str
-    language: str
-
-
-class TranslationResponse(BaseModel):
-    id: str
-    original: str
-    final: str
-    steps: List[TranslationStep]
-    similarity: float
 
 
 @app.post("/translate")
