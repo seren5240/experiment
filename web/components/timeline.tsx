@@ -46,7 +46,7 @@ export const Timeline = ({
           </div>
         </li>
       ))}
-      <div className="flex-start flex items-center pb-3">
+      <div className="flex-start flex items-center">
         <Explainer
           explainStep={explainStep}
           explainedSteps={explainedSteps}
