@@ -59,8 +59,8 @@ export default function Home() {
   }, [languages, searchParams]);
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-4 md:p-24">
-      <div className="max-w-5xl w-full flex flex-col gap-12 items-start">
+    <main className="flex min-h-screen flex-col items-center justify-between p-4 md:p-20">
+      <div className="max-w-6xl w-full flex flex-col gap-12 items-start">
         <p className="text-sm">
           This is a tool to see the semantic similarity of English phrases after
           bounced through multiple languages using Microsoft&apos;s Azure
@@ -72,7 +72,7 @@ export default function Home() {
           French &gt; English &gt; Spanish &gt; English, with the final English
           output displayed under &quot;Final text&quot;.
         </p>
-        <div className="max-w-5xl w-full flex flex-col lg:flex-row gap-12 items-start items-start">
+        <div className="max-w-6xl w-full flex flex-col lg:flex-row gap-12 items-start items-start">
           <div
             className="flex flex-col h-full gap-8 items-center"
             style={{ minWidth: "30%" }}
@@ -82,7 +82,7 @@ export default function Home() {
             </Button>
             <Languages languages={languages} setLanguages={setLanguages} />
           </div>
-          <div className="z-10 max-w-5xl w-full items-start justify-between font-sans text-sm lg:flex flex-col gap-4 flex">
+          <div className="z-10 max-w-6xl w-full items-start justify-between font-sans text-sm lg:flex flex-col gap-4 flex overflow-auto lg:max-h-124">
             <div className="flex-col items-start justify-between w-full">
               <label
                 htmlFor="message"
