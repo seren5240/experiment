@@ -30,14 +30,15 @@ export const AIButton = (
     loading?: boolean;
   }
 ) => {
+  const { loading, ...rest } = props;
   return (
     <button
       className={`${BASE_BUTTON_PROPS} flex gap-2 px-3 items-center group relative`}
-      {...props}
+      {...rest}
       onClick={props.onClick.bind(props)}
     >
       <span className="absolute top-0 left-0 flex w-full h-0 mb-0 transition-all duration-200 ease-out transform translate-y-0 bg-blue-800 group-hover:h-full opacity-90"></span>
-      {props.loading ? <GrowSpinner /> : <BoltIcon className="h-6 w-6 min-w-6 group-hover:text-white z-10" />}
+      {loading ? <GrowSpinner /> : <BoltIcon className="h-6 w-6 min-w-6 group-hover:text-white z-10" />}
       <p className="text-sm group-hover:text-white z-10">Explain with AI</p>
     </button>
   );
