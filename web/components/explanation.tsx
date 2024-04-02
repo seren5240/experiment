@@ -12,7 +12,8 @@ export const Explainer = ({
   explainedSteps: StepWithExplanation[] | undefined;
   index: number;
 }) => {
-  const ourExplanation = explainedSteps?.[index]?.explanation;
+  const ourStep = explainedSteps?.[index];
+  const ourExplanation = ourStep?.explanation;
   const inputLanguage = useMemo(() => {
     return index === 0
       ? "English"
@@ -32,6 +33,7 @@ export const Explainer = ({
         onClick={() => {
           explainStep(index);
         }}
+        loading={ourStep?.loading}
       />
     </div>
   ) : (

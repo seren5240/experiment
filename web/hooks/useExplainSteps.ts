@@ -2,7 +2,10 @@ import { useCallback, useEffect, useState } from "react";
 import { TranslationStep } from "./types";
 import { API_URL } from "@/config";
 
-export type StepWithExplanation = TranslationStep & { explanation?: string };
+export type StepWithExplanation = TranslationStep & {
+  loading?: boolean;
+  explanation?: string;
+};
 type ExplanationResponse = {
   id: string;
   explanation: string;
@@ -31,6 +34,10 @@ export const useExplainSteps = ({
         console.error("No translation id provided");
         return;
       }
+      const withLoading = explanations?.map((step, index) =>
+        index === i ? { ...step, loading: true } : step
+      );
+      setExplanations(withLoading);
       const res = await fetch(`${API_URL}/explain`, {
         method: "POST",
         headers: {
@@ -43,7 +50,9 @@ export const useExplainSteps = ({
       });
       const data: ExplanationResponse = await res.json();
       const explained = explanations?.map((step, index) =>
-        index === i ? { ...step, explanation: data.explanation } : step
+        index === i
+          ? { ...step, explanation: data.explanation, loading: false }
+          : step
       );
       setExplanations(explained);
     },

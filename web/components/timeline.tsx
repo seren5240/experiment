@@ -1,6 +1,5 @@
 import { TranslationStep } from "@/hooks/types";
 import { languageCodeToName } from "@/utils/languages";
-import { AIButton } from "./button";
 import { useExplainSteps } from "@/hooks/useExplainSteps";
 import { Explainer } from "./explanation";
 
