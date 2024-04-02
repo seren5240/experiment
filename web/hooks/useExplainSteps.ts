@@ -23,10 +23,10 @@ export const useExplainSteps = ({
   >(steps);
 
   useEffect(() => {
-    if (!!steps && !explanations) {
+    if (translation_id) {
       setExplanations(steps);
     }
-  }, [steps, explanations]);
+  }, [translation_id, steps]);
 
   const explainStep = useCallback(
     async (i: number) => {
@@ -34,10 +34,11 @@ export const useExplainSteps = ({
         console.error("No translation id provided");
         return;
       }
-      const withLoading = explanations?.map((step, index) =>
-        index === i ? { ...step, loading: true } : step
+      setExplanations((explanations) =>
+        explanations?.map((step, index) =>
+          index === i ? { ...step, loading: true } : step
+        )
       );
-      setExplanations(withLoading);
       const res = await fetch(`${API_URL}/explain`, {
         method: "POST",
         headers: {
@@ -49,14 +50,15 @@ export const useExplainSteps = ({
         }),
       });
       const data: ExplanationResponse = await res.json();
-      const explained = explanations?.map((step, index) =>
-        index === i
-          ? { ...step, explanation: data.explanation, loading: false }
-          : step
+      setExplanations((explanations) =>
+        explanations?.map((step, index) =>
+          index === i
+            ? { ...step, explanation: data.explanation, loading: false }
+            : step
+        )
       );
-      setExplanations(explained);
     },
-    [translation_id, explanations]
+    [translation_id]
   );
 
   return { explainStep, explainedSteps: explanations };
