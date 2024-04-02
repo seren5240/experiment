@@ -1,5 +1,5 @@
 import { BoltIcon } from "@heroicons/react/16/solid";
-import { MouseEventHandler, useState } from "react";
+import { MouseEventHandler } from "react";
 import { GrowSpinner } from "./spin";
 
 interface ButtonProps
@@ -37,9 +37,9 @@ export const AIButton = (
       {...rest}
       onClick={props.onClick.bind(props)}
     >
-      <span className="absolute top-0 left-0 flex w-full h-0 mb-0 transition-all duration-200 ease-out transform translate-y-0 bg-blue-800 group-hover:h-full opacity-90"></span>
+      {!loading && <span className="absolute top-0 left-0 flex w-full h-0 mb-0 transition-all duration-200 ease-out transform translate-y-0 bg-blue-800 group-hover:h-full opacity-90"></span>}
       {loading ? <GrowSpinner /> : <BoltIcon className="h-6 w-6 min-w-6 group-hover:text-white z-10" />}
-      <p className="text-sm group-hover:text-white z-10">Explain with AI</p>
+      <p className={`text-sm z-10 ${loading ? '' : 'group-hover:text-white'}`}>Explain with AI</p>
     </button>
   );
 };
