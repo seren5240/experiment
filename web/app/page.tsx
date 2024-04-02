@@ -58,6 +58,18 @@ export default function Home() {
     setLoading(false);
   }, [languages, searchParams]);
 
+  const clear = useCallback(() => {
+    window.history.pushState(null, "", "/");
+    if (inputRef.current) {
+      inputRef.current.value = "";
+    }
+    setLanguages([]);
+    setLoading(false);
+    setError(undefined);
+    setFreshResponse(undefined);
+
+  }, []);
+
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-4 md:p-20">
       <div className="max-w-6xl w-full flex flex-col gap-12 items-start">
@@ -77,9 +89,15 @@ export default function Home() {
             className="flex flex-col h-full gap-8 items-center"
             style={{ minWidth: "30%" }}
           >
-            <Button onClick={translateText} disabled={loading || loadingStored}>
-              Translate
-            </Button>
+            <div className="flex items-center gap-4">
+              <Button
+                onClick={translateText}
+                disabled={loading || loadingStored}
+              >
+                Translate
+              </Button>
+              <Button onClick={clear}>Clear</Button>
+            </div>
             <Languages languages={languages} setLanguages={setLanguages} />
           </div>
           <div className="z-10 max-w-6xl w-full items-start justify-between font-sans text-sm lg:flex flex-col gap-4 flex overflow-auto lg:max-h-124">

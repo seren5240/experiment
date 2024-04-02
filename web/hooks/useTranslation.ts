@@ -15,6 +15,7 @@ export const useStoredTranslation = ({
   useEffect(() => {
     const fetchTranslation = async () => {
       if (!id || skip) {
+        setTranslation(undefined);
         return;
       }
       setLoading(true);
