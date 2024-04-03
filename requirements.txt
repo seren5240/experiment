@@ -13,7 +13,7 @@ Brotli==1.1.0
 certifi==2024.2.2
 cffi==1.16.0
 charset-normalizer==3.3.2
-click @ file:///private/tmp/python-click-20231113-5273-1n9fjmk/click-8.1.7
+click==8.1.7
 distro==1.9.0
 docstring-parser==0.15
 fastapi==0.110.0
@@ -43,7 +43,7 @@ multidict==6.0.5
 networkx==3.2.1
 numpy==1.26.4
 openai==1.14.3
-packaging @ file:///private/tmp/python-packaging-20231018-5228-nhvg0j/packaging-23.2
+packaging==23.2
 pandas==2.2.1
 pillow==10.2.0
 pluggy==1.4.0
@@ -54,7 +54,7 @@ pycares==4.4.0
 pycparser==2.22
 pydantic==2.6.4
 pydantic_core==2.16.3
-Pygments @ file:///private/tmp/pygments-20231121-5079-e7uuzt/pygments-2.17.2
+Pygments==2.17.2
 pytest==8.1.1
 pytest-asyncio==0.23.6
 python-dateutil==2.9.0.post0
