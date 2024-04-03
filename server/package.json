@@ -1,0 +1,13 @@
+{
+    "name": "server",
+    "version": "0.2.2",
+    "description": "Translator backend",
+    "author": "",
+    "license": "MIT",
+    "private": true,
+    "dependencies": {},
+    "scripts": {
+      "dev": "env $(cat ../.env | xargs) uvicorn main:app --reload"
+    }
+  }
+  
