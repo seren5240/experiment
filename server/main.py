@@ -15,13 +15,7 @@ from explain import explain
 from model.db import get_db_session
 from model.base import Translation, StepExplanation
 from fastapi.middleware.cors import CORSMiddleware
-from dotenv import load_dotenv
-import os
 from sqlalchemy.ext.asyncio import AsyncSession
-
-# Construct the path to the .env file
-dotenv_path = os.path.join(os.path.dirname(__file__), "..", ".env")
-load_dotenv(dotenv_path)
 
 
 app = FastAPI()
