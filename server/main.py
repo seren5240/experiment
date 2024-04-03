@@ -16,6 +16,7 @@ from model.db import get_db_session
 from model.base import Translation, StepExplanation
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy import text
 
 
 app = FastAPI()
@@ -29,8 +30,9 @@ app.add_middleware(
 
 
 @app.get("/")
-async def root():
-    return {"message": "Hello World"}
+async def root(db: AsyncSession = Depends(get_db_session)):
+    await db.execute(text("SELECT 1"))
+    return {"message": "Hello World", "db": True}
 
 
 @app.post("/translate")
