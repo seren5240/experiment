@@ -3,15 +3,26 @@ from bs4 import BeautifulSoup
 import aiohttp
 import asyncio
 
-url = "https://www.cbsnews.com/boston/news/ntsb-report-jetblue-hop-a-jet-close-call-logan-airport-boston-february-27/"
-
 
 async def main():
     async with aiohttp.ClientSession() as session:
+        api_key = os.getenv("RAPIDAPI_KEY")
+        headers = {
+            "X-RapidAPI-Key": api_key,
+            "X-RapidAPI-Host": "news-api14.p.rapidapi.com",
+        }
+        response = await session.get(
+            "https://news-api14.p.rapidapi.com/top-headlines?language=en",
+            headers=headers,
+        )
+        data = await response.json()
+        url = data["articles"][0]["url"]
+
         response = await session.get(url)
         text = await response.text()
         soup = BeautifulSoup(text, "html.parser")
         text = soup.get_text()
+        print(text)
 
         api_key = os.getenv("OPENROUTER_API_KEY")
         payload = {
