@@ -1,7 +1,10 @@
 import os
+import uuid
 from bs4 import BeautifulSoup
 import aiohttp
 import asyncio
+
+from model.base import Article
 
 
 async def get_headlines():
@@ -57,6 +60,17 @@ async def summarize(text: str) -> str:
         )
         data = await response.json()
         return data["choices"][0]["message"]["content"]
+
+
+async def get_article() -> Article:
+    headlines = await get_headlines()
+    url: str = headlines["articles"][0]["url"]
+    text = await get_html_text(url)
+    summary = await summarize(text)
+    id = str(uuid.uuid4())
+    return Article(
+        id=id, url=url, text_content=text, summary=summary, headlines=headlines
+    )
 
 
 async def main():

@@ -1,3 +1,6 @@
+import asyncio
+from contextlib import asynccontextmanager
+import datetime
 import uuid
 from fastapi import FastAPI, Depends
 from model.translation import fetch_translation
@@ -9,6 +12,7 @@ from schema import (
     ExplanationResponse,
 )
 from model.explanation import fetch_explanation_by_translation_step
+from model.article import fetch_latest_article
 from translate import translate_text
 from similarity import compute_similarity
 from explain import explain
@@ -17,9 +21,28 @@ from model.base import Translation, StepExplanation
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import text
+from summarize import get_article
+from util import time_until
 
 
-app = FastAPI()
+async def sync_article():
+    target_time = datetime.time(12, 0, 0)
+    while True:
+        print("Getting article")
+        # article = await get_article()
+        article = await fetch_latest_article()
+        sleep_seconds = time_until(target_time)
+        print(f"Sleeping for {sleep_seconds} seconds")
+        await asyncio.sleep(sleep_seconds)
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    asyncio.create_task(sync_article())
+    yield
+
+
+app = FastAPI(lifespan=lifespan)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
