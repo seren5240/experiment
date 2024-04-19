@@ -9,7 +9,7 @@ asyncpg==0.29.0
 attrs==23.2.0
 backoff==2.2.1
 boilerpy3==1.0.7
-bs4==4.12.3
+bs4==0.0.2
 Brotli==1.1.0
 certifi==2024.2.2
 cffi==1.16.0
