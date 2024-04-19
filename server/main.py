@@ -16,7 +16,7 @@ from model.article import fetch_latest_article
 from translate import translate_text
 from similarity import compute_similarity
 from explain import explain
-from model.db import get_db_session
+from model.db import get_db_session, get_managed_db_session
 from model.base import Translation, StepExplanation
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -28,9 +28,14 @@ from util import time_until
 async def sync_article():
     target_time = datetime.time(12, 0, 0)
     while True:
-        print("Getting article")
-        # article = await get_article()
-        article = await fetch_latest_article()
+        async with get_managed_db_session() as session:
+            article = await fetch_latest_article(session)
+            if article is None:
+                article = await get_article()
+                print(f"Got article: {article}")
+                await session.add(article)
+                await session.commit()
+
         sleep_seconds = time_until(target_time)
         print(f"Sleeping for {sleep_seconds} seconds")
         await asyncio.sleep(sleep_seconds)
