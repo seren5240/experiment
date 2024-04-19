@@ -30,14 +30,12 @@ async def sync_article():
     while True:
         async with get_managed_db_session() as session:
             article = await fetch_latest_article(session)
-            if article is None:
+            if article is None or article.created_at.date() < datetime.date.today():
                 article = await get_article()
-                print(f"Got article: {article}")
-                await session.add(article)
+                session.add(article)
                 await session.commit()
 
         sleep_seconds = time_until(target_time)
-        print(f"Sleeping for {sleep_seconds} seconds")
         await asyncio.sleep(sleep_seconds)
 
 
