@@ -63,3 +63,7 @@ body {
   background-size: 300% 300%;
   animation: animatedgradient 3s ease alternate infinite;
 }
+
+::-webkit-scrollbar {
+  display: none;
+}
