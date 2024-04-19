@@ -75,7 +75,7 @@ export default function Home() {
     <main className="flex min-h-screen flex-col items-center justify-between p-4 md:p-8">
       <div className="max-w-6xl w-full flex flex-col gap-12 items-start">
         <p
-          className="text-sm md:fixed md:left-0 md:top-0 md:pt-8 md:pl-8 md:pr-8 md:pb-4 mb-4 bg-[#d6dbdc] z-3"
+          className="text-sm md:fixed md:left-0 md:top-0 md:pt-8 md:pl-8 md:pr-8 md:pb-4 mb-4 bg-[#d6dbdc] z-40"
           ref={headerRef}
         >
           This is a tool to see the semantic similarity of English phrases after
