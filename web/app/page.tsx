@@ -5,6 +5,7 @@ import { Languages } from "@/components/languages";
 import { Timeline } from "@/components/timeline";
 import { API_URL } from "@/config";
 import { TranslationResponse } from "@/hooks/types";
+import { useGameMode } from "@/hooks/useGameMode";
 import { useStoredTranslation } from "@/hooks/useTranslation";
 import { UniqueLanguage } from "@/utils/languages";
 import { useSearchParams } from "next/navigation";
@@ -69,12 +70,12 @@ export default function Home() {
     setFreshResponse(undefined);
   }, []);
 
+  const { inGame, setInGame } = useGameMode();
+
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-4 md:p-8">
       <div className="max-w-6xl w-full flex flex-col gap-12 items-start">
-        <p
-          className="text-sm md:fixed md:left-0 md:top-0 md:pt-4 md:pl-8 md:pr-8 md:pb-4 md:mb-4 md:bg-[#d6dbdc] z-40"
-        >
+        <p className="text-sm md:fixed md:left-0 md:top-0 md:pt-4 md:pl-8 md:pr-8 md:pb-4 md:mb-4 md:bg-[#d6dbdc] z-40">
           This is a tool to see the semantic similarity of English phrases after
           bounced through multiple languages using Microsoft&apos;s Azure
           Translator API. The final transformation, after translating through
@@ -85,9 +86,7 @@ export default function Home() {
           French &gt; English &gt; Spanish &gt; English, with the final English
           output displayed under &quot;Final text&quot;.
         </p>
-        <div
-          className="max-w-6xl w-full flex flex-col lg:flex-row gap-12 items-start items-start md:mt-36 lg:mt-24"
-        >
+        <div className="max-w-6xl w-full flex flex-col lg:flex-row gap-12 items-start items-start md:mt-36 lg:mt-24">
           <div
             className="flex flex-col h-full gap-8 items-center"
             style={{ minWidth: "30%" }}
@@ -100,6 +99,9 @@ export default function Home() {
                 Translate
               </Button>
               <Button onClick={clear}>Clear</Button>
+              <Button onClick={() => setInGame(!inGame)}>
+                {inGame ? "Exit Game" : "Start Game"}
+              </Button>
             </div>
             <Languages languages={languages} setLanguages={setLanguages} />
           </div>
