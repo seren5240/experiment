@@ -69,14 +69,11 @@ export default function Home() {
     setFreshResponse(undefined);
   }, []);
 
-  const headerRef = useRef<HTMLDivElement>(null);
-
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-4 md:p-8">
       <div className="max-w-6xl w-full flex flex-col gap-12 items-start">
         <p
-          className="text-sm md:fixed md:left-0 md:top-0 md:pt-8 md:pl-8 md:pr-8 md:pb-4 md:mb-4 md:bg-[#d6dbdc] z-40"
-          ref={headerRef}
+          className="text-sm md:fixed md:left-0 md:top-0 md:pt-4 md:pl-8 md:pr-8 md:pb-4 md:mb-4 md:bg-[#d6dbdc] z-40"
         >
           This is a tool to see the semantic similarity of English phrases after
           bounced through multiple languages using Microsoft&apos;s Azure
@@ -89,12 +86,7 @@ export default function Home() {
           output displayed under &quot;Final text&quot;.
         </p>
         <div
-          className="max-w-6xl w-full flex flex-col lg:flex-row gap-12 items-start items-start"
-          style={{
-            ...(window.innerWidth >= 768
-              ? { marginTop: headerRef.current?.clientHeight }
-              : {}),
-          }}
+          className="max-w-6xl w-full flex flex-col lg:flex-row gap-12 items-start items-start md:mt-36 lg:mt-24"
         >
           <div
             className="flex flex-col h-full gap-8 items-center"
