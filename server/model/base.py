@@ -54,3 +54,22 @@ class StepExplanation(Base):
 
     def __repr__(self) -> str:
         return f"StepExplanation(id={self.id}, translation_id={self.translation_id}, step={self.step}, explanation={self.explanation})"
+
+
+class Article(Base):
+    __tablename__ = "article"
+    id: Mapped[uuid.UUID] = mapped_column(
+        types.UUID,
+        primary_key=True,
+        server_default=text("gen_random_uuid()"),
+    )
+    url: Mapped[str] = mapped_column(types.String, nullable=False)
+    text_content: Mapped[str] = mapped_column(types.String, nullable=False)
+    summary: Mapped[str] = mapped_column(types.String, nullable=False)
+    headlines: Mapped[str] = mapped_column(types.JSON, nullable=False)
+    created_at: Mapped[datetime] = mapped_column(
+        types.DateTime, nullable=False, server_default=text("now()")
+    )
+
+    def __repr__(self) -> str:
+        return f"Article(id={self.id}, url={self.url}, content={self.text_content}, summary={self.summary})"
