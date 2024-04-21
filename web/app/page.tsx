@@ -71,7 +71,7 @@ export default function Home() {
     setFreshResponse(undefined);
   }, []);
 
-  const { inGame, setInGame } = useGameMode();
+  const { inGame, setInGame, article } = useGameMode();
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-4 md:p-8">
