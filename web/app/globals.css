@@ -4,7 +4,7 @@
 
 :root {
   --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 235, 236, 236;
+  --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
 }
 
@@ -18,7 +18,12 @@
 
 body {
   color: rgb(var(--foreground-rgb));
-  background: rgb(var(--background-start-rgb));
+  background: linear-gradient(
+      to bottom,
+      transparent,
+      rgb(var(--background-end-rgb))
+    )
+    rgb(var(--background-start-rgb));
 }
 
 @layer utilities {
@@ -33,7 +38,7 @@ body {
 }
 
 .gradient-border::before {
-  content: ' ';
+  content: " ";
   position: absolute;
   top: var(--borderWidth);
   left: var(--borderWidth);
@@ -47,13 +52,21 @@ body {
 }
 
 .gradient-border::after {
-  content: ' ';
+  content: " ";
   position: absolute;
   top: calc(-1 * var(--borderWidth));
   left: calc(-1 * var(--borderWidth));
   right: calc(-1 * var(--borderWidth));
   bottom: calc(-1 * var(--borderWidth));
-  background: linear-gradient(60deg, #ffea69, #ff3c38, #392aff, #2a78ff, #1098ad, #07b39b);
+  background: linear-gradient(
+    60deg,
+    #ffea69,
+    #ff3c38,
+    #392aff,
+    #2a78ff,
+    #1098ad,
+    #07b39b
+  );
   z-index: 0;
   background-size: 300% 300%;
   animation: animatedgradient 3s ease alternate infinite;
