@@ -28,3 +28,8 @@ class ExplanationRequest(BaseModel):
 class ExplanationResponse(BaseModel):
     id: str
     explanation: str
+
+
+class ArticleResponse(BaseModel):
+    id: str
+    summary: str

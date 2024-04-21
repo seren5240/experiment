@@ -143,3 +143,14 @@ async def explain_step(
         "id": id,
         "explanation": explanation,
     }
+
+
+@app.get("/summary")
+async def get_summary(
+    id: str, db: AsyncSession = Depends(get_db_session)
+) -> TranslationResponse:
+    article = await fetch_latest_article(db)
+    return {
+        "id": str(article.id),
+        "summary": article.summary,
+    }
