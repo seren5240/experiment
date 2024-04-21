@@ -7,6 +7,7 @@ import { API_URL } from "@/config";
 import { TranslationResponse } from "@/hooks/types";
 import { useGameMode } from "@/hooks/useGameMode";
 import { useStoredTranslation } from "@/hooks/useTranslation";
+import { DEFAULT_INTRO, GAME_INTRO } from "@/public/intro";
 import { UniqueLanguage } from "@/utils/languages";
 import { useSearchParams } from "next/navigation";
 import { useCallback, useMemo, useRef, useState } from "react";
@@ -76,17 +77,9 @@ export default function Home() {
     <main className="flex min-h-screen flex-col items-center justify-between p-4 md:p-8">
       <div className="max-w-6xl w-full flex flex-col gap-12 items-start">
         <p className="text-sm md:fixed md:left-0 md:top-0 md:pt-4 md:pl-8 md:pr-8 md:pb-4 md:mb-4 md:bg-[#d6dbdc] z-40">
-          This is a tool to see the semantic similarity of English phrases after
-          bounced through multiple languages using Microsoft&apos;s Azure
-          Translator API. The final transformation, after translating through
-          all selected languages, will always be back to English, so it is not
-          necessary to select English as the final language on the right
-          sidebar. For example, if you select French, English, and Spanish in
-          that order, then the full order of translation will go English &gt;
-          French &gt; English &gt; Spanish &gt; English, with the final English
-          output displayed under &quot;Final text&quot;.
+          {inGame ? GAME_INTRO : DEFAULT_INTRO}
         </p>
-        <div className="max-w-6xl w-full flex flex-col lg:flex-row gap-12 items-start items-start md:mt-36 lg:mt-24">
+        <div className="max-w-6xl w-full flex flex-col lg:flex-row gap-12 items-start items-start md:mt-36 lg:mt-24 container">
           <div
             className="flex flex-col h-full gap-8 items-center"
             style={{ minWidth: "30%" }}

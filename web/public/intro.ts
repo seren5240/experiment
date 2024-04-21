@@ -1,0 +1,5 @@
+export const DEFAULT_INTRO =
+  'This is a tool to see the semantic similarity of English phrases after bounced through multiple languages using Microsoft\'s Azure Translator API. The final transformation, after translating through all selected languages, will always be back to English, so it is not necessary to select English as the final language on the right sidebar. For example, if you select French, English, and Spanish in that order, then the full order of translation will go English > French > English > Spanish > English, with the final English output displayed under "Final text".';
+
+export const GAME_INTRO =
+  "In game mode, the input text is refreshed daily, being a summary of a top news item. The goal is to select a sequence of four languages (not including the start and ending English) to translate through that will result in the most similar output to the original text. Repeating is not allowed, and including English as one of the intermediate languages is not allowed. The score is calculated as the cosine similarity between the original text and the final translated text, multiplied by 1000.";
