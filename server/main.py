@@ -5,6 +5,7 @@ import uuid
 from fastapi import FastAPI, Depends
 from model.translation import fetch_translation
 from schema import (
+    ArticleResponse,
     TranslationRequest,
     TranslationResponse,
     TranslationStep,
@@ -146,9 +147,7 @@ async def explain_step(
 
 
 @app.get("/summary")
-async def get_summary(
-    id: str, db: AsyncSession = Depends(get_db_session)
-) -> TranslationResponse:
+async def get_summary(db: AsyncSession = Depends(get_db_session)) -> ArticleResponse:
     article = await fetch_latest_article(db)
     return {
         "id": str(article.id),
