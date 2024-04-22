@@ -12,6 +12,7 @@ import { DEFAULT_INTRO, GAME_INTRO } from "@/public/intro";
 import { UniqueLanguage } from "@/utils/languages";
 import { useSearchParams } from "next/navigation";
 import { useCallback, useMemo, useRef, useState } from "react";
+import { Leaderboard } from "@/components/leaderboard";
 
 export default function Home() {
   const inputRef = useRef<HTMLTextAreaElement>(null);
@@ -157,13 +158,16 @@ export default function Home() {
                       {response.final}
                     </div>
                   </div>
-                  <p className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                  <p className="block text-lg font-medium text-gray-900 dark:text-white">
                     Similarity: {response.similarity.toFixed(4)}
                   </p>
                   {inGame && (
-                    <p className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                      Score: {Math.round(response.similarity * 1000)}
-                    </p>
+                    <>
+                      <p className="block text-lg font-medium text-gray-900 dark:text-white">
+                        Score: {Math.round(response.similarity * 1000)}
+                      </p>
+                      <Leaderboard />
+                    </>
                   )}
                 </div>
               )}
