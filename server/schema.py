@@ -1,6 +1,8 @@
 from typing import List
 from pydantic import BaseModel
 
+from model.base import Score
+
 
 class TranslationRequest(BaseModel):
     text: str
@@ -33,3 +35,20 @@ class ExplanationResponse(BaseModel):
 class ArticleResponse(BaseModel):
     id: str
     summary: str
+
+
+class ScoreRequest(BaseModel):
+    name: str
+    score: int
+    article_id: str
+    translation_id: str
+
+
+class ScoreItem(BaseModel):
+    id: str
+    name: str
+    score: int
+
+
+class ScoreResponse(BaseModel):
+    leaderboard: List[ScoreItem]

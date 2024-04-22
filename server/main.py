@@ -6,6 +6,7 @@ from fastapi import FastAPI, Depends
 from model.translation import fetch_translation
 from schema import (
     ArticleResponse,
+    ScoreRequest,
     TranslationRequest,
     TranslationResponse,
     TranslationStep,
@@ -14,11 +15,12 @@ from schema import (
 )
 from model.explanation import fetch_explanation_by_translation_step
 from model.article import fetch_latest_article
+from model.score import update_leaderboard
 from translate import translate_text
 from similarity import compute_similarity
 from explain import explain
 from model.db import get_db_session, get_managed_db_session
-from model.base import Translation, StepExplanation
+from model.base import Score, Translation, StepExplanation
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import text
@@ -152,4 +154,23 @@ async def get_summary(db: AsyncSession = Depends(get_db_session)) -> ArticleResp
     return {
         "id": str(article.id),
         "summary": article.summary,
+    }
+
+
+@app.post("/score")
+async def add_score(score: ScoreRequest, db: AsyncSession = Depends(get_db_session)):
+    id = str(uuid.uuid4())
+    score = Score(
+        id=id,
+        name=score.name,
+        score=score.score,
+        article_id=score.article_id,
+        translation_id=score.translation_id,
+    )
+    leaderboard = await update_leaderboard(score, db)
+    return {
+        "leaderboard": [
+            {"id": str(item.id), "name": item.name, "score": item.score}
+            for item in leaderboard
+        ]
     }
