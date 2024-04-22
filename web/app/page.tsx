@@ -33,9 +33,11 @@ export default function Home() {
 
   const { inGame, setInGame, article } = useGameMode();
 
+  const input = useMemo(() => {
+    return inGame ? article : inputRef.current?.value;
+  }, [article, inGame]);
   const translateText = useCallback(async () => {
     setError(undefined);
-    const input = inGame ? article : inputRef.current?.value;
     if (!input) {
       setError("Enter text to translate");
       return;
@@ -65,7 +67,7 @@ export default function Home() {
     window.history.pushState(null, "", `?${params.toString()}`);
     setFreshResponse(data);
     setLoading(false);
-  }, [article, inGame, languages, searchParams]);
+  }, [inGame, input, languages, searchParams]);
 
   const clear = useCallback(() => {
     window.history.pushState(null, "", "/");
@@ -110,11 +112,6 @@ export default function Home() {
           <div className="z-10 max-w-6xl w-full items-start justify-between font-sans text-sm lg:flex flex-col gap-4 flex overflow-auto">
             {inGame ? (
               <div className="flex-col items-start justify-between w-full">
-                <div className="rounded-lg w-full gradient-border">
-                  <div className="relative z-10 flex items-center gap-1.5 px-3 py-3">
-                    {article}
-                  </div>
-                </div>
                 <Error error={error} />
               </div>
             ) : (
@@ -140,10 +137,10 @@ export default function Home() {
               <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                 Original text (English)
               </label>
-              {(loading || response) && (
+              {(loading || response || inGame) && (
                 <div className="rounded-lg w-full gradient-border">
                   <div className="relative z-10 flex items-center gap-1.5 px-3 py-3">
-                    {response ? response.original : inputRef.current?.value}
+                    {response ? response.original : input}
                   </div>
                 </div>
               )}
