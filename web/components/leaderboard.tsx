@@ -1,10 +1,15 @@
+import { useRef } from "react";
+
 export const Leaderboard = ({
   open,
   setOpen,
+  score,
 }: {
   open: boolean;
   setOpen: (open: boolean) => void;
+  score: number;
 }) => {
+  const nameRef = useRef<HTMLTextAreaElement>(null);
   if (!open) {
     return null;
   }
@@ -14,21 +19,29 @@ export const Leaderboard = ({
         <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
       </div>
 
-      <div className="bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:max-w-lg sm:w-full">
-        <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-          <h3 className="text-lg leading-6 font-medium text-gray-900">
+      <div className="bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all min-w-max w-full m-8 md:max-w-[688px]">
+        <div className="bg-white px-4 pt-5 pb-4 sm:p-6">
+          <h3 className="text-lg leading-6 font-medium text-gray-900 pb-4">
             Join Leaderboard
           </h3>
           <div className="mt-2">
-            {/* <ul className="list-disc list-inside">
-              <li>Rule 1: Be respectful and considerate.</li>
-              <li>
-                Rule 2: No offensive language or inappropriate behavior.
-              </li>
-              <li>Rule 3: Do not share personal information.</li>
-              <li>Rule 4: No spamming or advertising.</li>
-              <li>Rule 5: Follow all community guidelines.</li>
-            </ul> */}
+            <div className="flex-col items-start justify-between w-full">
+              <p className="pb-3">Your score was: {score}</p>
+              <label
+                htmlFor="name"
+                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >
+                Name
+              </label>
+              <textarea
+                id="name"
+                rows={1}
+                className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 resize-none"
+                placeholder="Enter your name"
+                ref={nameRef}
+                // disabled={loading || loadingStored}
+              />
+            </div>
           </div>
         </div>
         <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">

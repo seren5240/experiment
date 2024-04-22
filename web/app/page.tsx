@@ -31,6 +31,12 @@ export default function Home() {
     }
     return freshResponse ?? translation;
   }, [freshResponse, translation, loading]);
+  const score = useMemo(() => {
+    if (!response) {
+      return undefined;
+    }
+    return Math.round(response.similarity * 1000);
+  }, [response]);
 
   const { inGame, setInGame, article } = useGameMode();
   const [openBoard, setOpenBoard] = useState(false);
@@ -152,7 +158,7 @@ export default function Home() {
               <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                 Final text (English)
               </label>
-              {response !== undefined && (
+              {response !== undefined && score !== undefined && (
                 <div className="flex flex-col items-start justify-between w-full gap-2">
                   <div className="rounded-lg w-full gradient-border">
                     <div className="relative z-10 flex items-center gap-1.5 px-3 py-3">
@@ -165,9 +171,12 @@ export default function Home() {
                   {inGame && (
                     <>
                       <p className="block text-lg font-medium text-gray-900 dark:text-white">
-                        Score: {Math.round(response.similarity * 1000)}
+                        Score: {score}
                       </p>
-                      <p className="text-lg font-medium text-blue-600 dark:text-blue-500 hover:underline cursor-pointer" onClick={() => setOpenBoard(true)}>
+                      <p
+                        className="text-lg font-medium text-blue-600 dark:text-blue-500 hover:underline cursor-pointer"
+                        onClick={() => setOpenBoard(true)}
+                      >
                         Join Leaderboard
                       </p>
                     </>
@@ -178,7 +187,9 @@ export default function Home() {
           </div>
         </div>
       </div>
-      <Leaderboard open={openBoard} setOpen={setOpenBoard} />
+      {score !== undefined && (
+        <Leaderboard open={openBoard} setOpen={setOpenBoard} score={score} />
+      )}
     </main>
   );
 }
