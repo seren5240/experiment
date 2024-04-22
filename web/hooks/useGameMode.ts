@@ -25,7 +25,7 @@ export const useGameMode = () => {
       if (value && !article && !loading) {
         fetchArticle();
       }
-      // window.history.pushState(null, "", "/");
+      window.history.pushState(null, "", "/");
       setInGame(value);
     },
     [article, fetchArticle, loading]
