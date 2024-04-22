@@ -187,9 +187,17 @@ export default function Home() {
           </div>
         </div>
       </div>
-      {score !== undefined && response?.id !== undefined && article?.id !== undefined && (
-        <Leaderboard open={openBoard} setOpen={setOpenBoard} score={score} translation_id={response.id} article_id={article.id} />
-      )}
+      {score !== undefined &&
+        response?.id !== undefined &&
+        article?.id !== undefined && (
+          <Leaderboard
+            open={openBoard}
+            setOpen={setOpenBoard}
+            score={score}
+            translation_id={response.id}
+            article_id={article.id}
+          />
+        )}
     </main>
   );
 }

@@ -6,6 +6,7 @@ interface Score {
   id: Uuid;
   score: number;
   name: string;
+  translation_id: string;
 }
 
 export const useLeaderboard = ({
@@ -19,7 +20,7 @@ export const useLeaderboard = ({
   const [loading, setLoading] = useState(false);
 
   const addScore = useCallback(
-    async (score: Score) => {
+    async (score: Pick<Score, "name" | "score">) => {
       setLoading(true);
       const res = await fetch(`${API_URL}/score`, {
         method: "POST",
@@ -30,7 +31,7 @@ export const useLeaderboard = ({
       });
       const data = await res.json();
       setLoading(false);
-      setScores(data.scores);
+      setScores(data.leaderboard);
     },
     [article_id, translation_id]
   );

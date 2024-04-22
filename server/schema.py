@@ -48,6 +48,7 @@ class ScoreItem(BaseModel):
     id: str
     name: str
     score: int
+    translation_id: str
 
 
 class ScoreResponse(BaseModel):

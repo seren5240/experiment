@@ -7,6 +7,7 @@ from model.translation import fetch_translation
 from schema import (
     ArticleResponse,
     ScoreRequest,
+    ScoreResponse,
     TranslationRequest,
     TranslationResponse,
     TranslationStep,
@@ -158,7 +159,9 @@ async def get_summary(db: AsyncSession = Depends(get_db_session)) -> ArticleResp
 
 
 @app.post("/score")
-async def add_score(score: ScoreRequest, db: AsyncSession = Depends(get_db_session)):
+async def add_score(
+    score: ScoreRequest, db: AsyncSession = Depends(get_db_session)
+) -> ScoreResponse:
     id = str(uuid.uuid4())
     score = Score(
         id=id,
@@ -167,10 +170,15 @@ async def add_score(score: ScoreRequest, db: AsyncSession = Depends(get_db_sessi
         article_id=score.article_id,
         translation_id=score.translation_id,
     )
-    leaderboard = await update_leaderboard(score, db)
+    leaderboard = await update_leaderboard(db, score)
     return {
         "leaderboard": [
-            {"id": str(item.id), "name": item.name, "score": item.score}
+            {
+                "id": str(item.id),
+                "name": item.name,
+                "score": item.score,
+                "translation_id": str(item.translation_id),
+            }
             for item in leaderboard
         ]
     }
