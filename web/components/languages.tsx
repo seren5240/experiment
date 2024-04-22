@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import {
   DragDropContext,
   Draggable,
@@ -14,7 +14,7 @@ import { SUPPORTED_LANGUAGES, UniqueLanguage } from "@/utils/languages";
 const reorder = <T extends unknown>(
   list: T[],
   startIndex: number,
-  endIndex: number
+  endIndex: number,
 ) => {
   const result = Array.from(list);
   const [removed] = result.splice(startIndex, 1);
@@ -66,9 +66,11 @@ const LanguageItem = ({
 export const Languages = ({
   languages,
   setLanguages,
+  inGame,
 }: {
   languages: UniqueLanguage[];
   setLanguages: React.Dispatch<React.SetStateAction<UniqueLanguage[]>>;
+  inGame: boolean;
 }) => {
   const [selected, setSelected] = useState<DropdownOption>();
 
@@ -85,17 +87,17 @@ export const Languages = ({
       const reordered = reorder(
         languages,
         result.source.index,
-        result.destination.index
+        result.destination.index,
       );
 
       setLanguages(reordered);
     },
-    [languages, setLanguages]
+    [languages, setLanguages],
   );
 
   const onAdd = useCallback(() => {
     const language = SUPPORTED_LANGUAGES.find(
-      (lang) => lang.name === selected?.name
+      (lang) => lang.name === selected?.name,
     );
     if (!language) {
       return;
@@ -110,8 +112,18 @@ export const Languages = ({
     (id: string) => {
       setLanguages(languages.filter((lang) => lang.id !== id));
     },
-    [languages, setLanguages]
+    [languages, setLanguages],
   );
+
+  const options = useMemo(() => {
+    if (!inGame) {
+      return SUPPORTED_LANGUAGES;
+    }
+    return SUPPORTED_LANGUAGES.filter(
+      (lang) =>
+        !languages.some((l) => l.code === lang.code) && lang.code !== "en",
+    );
+  }, [inGame, languages]);
 
   return (
     <div className="flex flex-col text-sm w-full">
@@ -137,7 +149,7 @@ export const Languages = ({
       </label>
       <div className="flex flex-row w-full gap-2">
         <Dropdown
-          options={SUPPORTED_LANGUAGES}
+          options={options}
           selected={selected}
           setSelected={setSelected}
         />

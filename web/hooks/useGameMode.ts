@@ -19,9 +19,10 @@ export const useGameMode = () => {
       if (value && !article && !loading) {
         fetchArticle();
       }
+      window.history.pushState(null, "", "/");
       setInGame(value);
     },
-    [article, fetchArticle, loading]
+    [article, fetchArticle, loading],
   );
 
   return { inGame, setInGame: ourSetInGame, article };

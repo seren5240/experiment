@@ -3,6 +3,7 @@
 import { Button } from "@/components/button";
 import { Languages } from "@/components/languages";
 import { Timeline } from "@/components/timeline";
+import { Error } from "@/components/error";
 import { API_URL } from "@/config";
 import { TranslationResponse } from "@/hooks/types";
 import { useGameMode } from "@/hooks/useGameMode";
@@ -30,15 +31,21 @@ export default function Home() {
     return freshResponse ?? translation;
   }, [freshResponse, translation, loading]);
 
+  const { inGame, setInGame, article } = useGameMode();
+
   const translateText = useCallback(async () => {
     setError(undefined);
-    const input = inputRef.current?.value;
+    const input = inGame ? article : inputRef.current?.value;
     if (!input) {
       setError("Enter text to translate");
       return;
     }
     if (languages.length === 0) {
       setError("Select at least one language to translate to");
+      return;
+    }
+    if (inGame && languages.length !== 4) {
+      setError("In game mode, select exactly four languages");
       return;
     }
     setLoading(true);
@@ -58,7 +65,7 @@ export default function Home() {
     window.history.pushState(null, "", `?${params.toString()}`);
     setFreshResponse(data);
     setLoading(false);
-  }, [languages, searchParams]);
+  }, [article, inGame, languages, searchParams]);
 
   const clear = useCallback(() => {
     window.history.pushState(null, "", "/");
@@ -70,8 +77,6 @@ export default function Home() {
     setError(undefined);
     setFreshResponse(undefined);
   }, []);
-
-  const { inGame, setInGame, article } = useGameMode();
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-4 md:p-8">
@@ -96,34 +101,41 @@ export default function Home() {
                 {inGame ? "Exit Game" : "Start Game"}
               </Button>
             </div>
-            <Languages languages={languages} setLanguages={setLanguages} />
+            <Languages
+              languages={languages}
+              setLanguages={setLanguages}
+              inGame={inGame}
+            />
           </div>
           <div className="z-10 max-w-6xl w-full items-start justify-between font-sans text-sm lg:flex flex-col gap-4 flex overflow-auto">
-            <div className="flex-col items-start justify-between w-full">
-              <label
-                htmlFor="message"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >
-                What would you like to translate?
-              </label>
-              <textarea
-                id="message"
-                rows={4}
-                className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="Write your input here..."
-                ref={inputRef}
-                disabled={loading || loadingStored}
-              />
-              {error !== undefined && (
-                <div
-                  className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mt-3"
-                  role="alert"
-                >
-                  <strong className="font-bold">Error: </strong>
-                  <span className="block sm:inline">{error}</span>
+            {inGame ? (
+              <div className="flex-col items-start justify-between w-full">
+                <div className="rounded-lg w-full gradient-border">
+                  <div className="relative z-10 flex items-center gap-1.5 px-3 py-3">
+                    {article}
+                  </div>
                 </div>
-              )}
-            </div>
+                <Error error={error} />
+              </div>
+            ) : (
+              <div className="flex-col items-start justify-between w-full">
+                <label
+                  htmlFor="message"
+                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                >
+                  What would you like to translate?
+                </label>
+                <textarea
+                  id="message"
+                  rows={4}
+                  className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  placeholder="Write your input here..."
+                  ref={inputRef}
+                  disabled={loading || loadingStored}
+                />
+                <Error error={error} />
+              </div>
+            )}
             <div className="flex-col items-start justify-between w-full">
               <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                 Original text (English)
@@ -151,6 +163,11 @@ export default function Home() {
                   <p className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                     Similarity: {response.similarity.toFixed(4)}
                   </p>
+                  {inGame && (
+                    <p className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                      Score: {Math.round(response.similarity * 1000)}
+                    </p>
+                  )}
                 </div>
               )}
             </div>
