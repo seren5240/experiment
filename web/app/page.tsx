@@ -42,7 +42,7 @@ export default function Home() {
   const [openBoard, setOpenBoard] = useState(false);
 
   const input = useMemo(() => {
-    return inGame ? article : inputRef.current?.value;
+    return inGame ? article?.summary : inputRef.current?.value;
   }, [article, inGame]);
   const translateText = useCallback(async () => {
     setError(undefined);
@@ -187,8 +187,8 @@ export default function Home() {
           </div>
         </div>
       </div>
-      {score !== undefined && (
-        <Leaderboard open={openBoard} setOpen={setOpenBoard} score={score} />
+      {score !== undefined && response?.id !== undefined && article?.id !== undefined && (
+        <Leaderboard open={openBoard} setOpen={setOpenBoard} score={score} translation_id={response.id} article_id={article.id} />
       )}
     </main>
   );

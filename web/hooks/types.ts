@@ -1,6 +1,6 @@
 import { Brand } from "@/utils/types";
 
-type Uuid = Brand<string, "Uuid">;
+export type Uuid = Brand<string, "Uuid">;
 
 export type TranslationStep = {
   language: string;

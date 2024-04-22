@@ -1,3 +1,4 @@
+import { useLeaderboard } from "@/hooks/useLeaderboard";
 import { XMarkIcon } from "@heroicons/react/16/solid";
 import { useRef } from "react";
 
@@ -5,12 +6,21 @@ export const Leaderboard = ({
   open,
   setOpen,
   score,
+  article_id,
+  translation_id,
 }: {
   open: boolean;
   setOpen: (open: boolean) => void;
   score: number;
+  article_id: string;
+  translation_id: string;
 }) => {
   const nameRef = useRef<HTMLTextAreaElement>(null);
+  const { scores, addScore, loading } = useLeaderboard({
+    article_id,
+    translation_id,
+  });
+  
   if (!open) {
     return null;
   }
@@ -46,7 +56,6 @@ export const Leaderboard = ({
                 className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 resize-none"
                 placeholder="Enter your name"
                 ref={nameRef}
-                // disabled={loading || loadingStored}
               />
             </div>
           </div>
