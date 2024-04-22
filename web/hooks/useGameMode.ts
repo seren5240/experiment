@@ -7,14 +7,11 @@ export const useGameMode = () => {
   const [loading, setLoading] = useState(false);
 
   const fetchArticle = useCallback(async () => {
-    console.log("fucking doing this");
     setLoading(true);
     const res = await fetch(`${API_URL}/summary`);
     const data = await res.json();
-    console.log(`res is ${res.status}, data is ${JSON.stringify(data)}`);
     setArticle(data.summary);
     setLoading(false);
-    console.log(`article is now ${article}`);
   }, []);
 
   const ourSetInGame = useCallback(
