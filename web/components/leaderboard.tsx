@@ -32,7 +32,35 @@ export const Leaderboard = ({
 
       <div className="bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all min-w-max w-full m-8 md:max-w-[688px]">
         {scores ? (
-          <p>{JSON.stringify(scores)}</p>
+          <div className="bg-white px-4 pt-5 pb-4 sm:p-6">
+            <div className="flex items-start justify-between">
+              <h3 className="text-lg leading-6 font-medium text-gray-900 pb-4">
+                Leaderboard
+              </h3>
+              <XMarkIcon
+                className="h-6 w-6 cursor-pointer"
+                onClick={() => setOpen(false)}
+              />
+            </div>
+            <table className="table-auto w-full">
+              <thead>
+                <tr>
+                  <th>Rank</th>
+                  <th>Name</th>
+                  <th>Score</th>
+                </tr>
+              </thead>
+              <tbody>
+                {scores.map((score, index) => (
+                  <tr key={score.id}>
+                    <td>{index + 1}</td>
+                    <td>{score.name}</td>
+                    <td>{score.score}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         ) : (
           <>
             <div className="bg-white px-4 pt-5 pb-4 sm:p-6">
