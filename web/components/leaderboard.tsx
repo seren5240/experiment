@@ -1,3 +1,4 @@
+import { XMarkIcon } from "@heroicons/react/16/solid";
 import { useRef } from "react";
 
 export const Leaderboard = ({
@@ -21,9 +22,15 @@ export const Leaderboard = ({
 
       <div className="bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all min-w-max w-full m-8 md:max-w-[688px]">
         <div className="bg-white px-4 pt-5 pb-4 sm:p-6">
-          <h3 className="text-lg leading-6 font-medium text-gray-900 pb-4">
-            Join Leaderboard
-          </h3>
+          <div className="flex items-start justify-between">
+            <h3 className="text-lg leading-6 font-medium text-gray-900 pb-4">
+              Join Leaderboard
+            </h3>
+            <XMarkIcon
+              className="h-6 w-6 cursor-pointer"
+              onClick={() => setOpen(false)}
+            />
+          </div>
           <div className="mt-2">
             <div className="flex-col items-start justify-between w-full">
               <p className="pb-3">Your score was: {score}</p>
