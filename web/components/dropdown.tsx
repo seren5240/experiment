@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import ClickAwayListener from "react-click-away-listener";
 
 export type DropdownOption = {
@@ -16,6 +16,12 @@ export const Dropdown = ({
     setSelected: React.Dispatch<React.SetStateAction<DropdownOption | undefined>>;
 }) => {
   const [open, setOpen] = useState(false);
+  const [searchValue, setSearchValue] = useState("");
+  const filteredOptions = useMemo(() => {
+    return options.filter((option) =>
+      option.name.toLowerCase().includes(searchValue.toLowerCase())
+    );
+  }, [options, searchValue]);
 
   return (
     <ClickAwayListener onClickAway={() => setOpen(false)}>
@@ -44,16 +50,21 @@ export const Dropdown = ({
         </button>
 
         <div
-          className={`z-20 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 max-h-72 overflow-auto ${
+          className={`z-20 bg-white min-w-60 divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 max-h-72 overflow-auto ${
             open ? "absolute mt-2" : "hidden"
           }`}
           role="menu"
         >
+          <input
+            className="p-2 text-sm text-gray-900 dark:text-gray-200 border-b border-gray-200 m-2"
+            placeholder="Search..."
+           onChange={(e) => setSearchValue(e.target.value)}
+          />
           <ul
             className="py-2 text-sm text-gray-700 dark:text-gray-200"
             aria-labelledby="dropdownDefaultButton"
           >
-            {options.map((option) => {
+            {filteredOptions.map((option) => {
               let Icon = option.icon;
               return (
                 <li
