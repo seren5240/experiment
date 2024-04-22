@@ -73,3 +73,28 @@ class Article(Base):
 
     def __repr__(self) -> str:
         return f"Article(id={self.id}, url={self.url}, content={self.text_content}, summary={self.summary})"
+
+
+class Score(Base):
+    __tablename__ = "score"
+    id: Mapped[uuid.UUID] = mapped_column(
+        types.UUID,
+        primary_key=True,
+        server_default=text("gen_random_uuid()"),
+    )
+    article_id: Mapped[uuid.UUID] = mapped_column(
+        ForeignKey("article.id"),
+        nullable=False,
+    )
+    translation_id: Mapped[uuid.UUID] = mapped_column(
+        ForeignKey("translation.id"),
+        nullable=False,
+    )
+    name: Mapped[str] = mapped_column(types.String, nullable=False)
+    score: Mapped[float] = mapped_column(types.Float, nullable=False)
+    created_at: Mapped[datetime] = mapped_column(
+        types.DateTime, nullable=False, server_default=text("now()")
+    )
+
+    def __repr__(self) -> str:
+        return f"Score(id={self.id}, article_id={self.article_id}, translation_id={self.translation_id}, score={self.score})"
