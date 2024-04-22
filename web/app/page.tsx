@@ -33,6 +33,7 @@ export default function Home() {
   }, [freshResponse, translation, loading]);
 
   const { inGame, setInGame, article } = useGameMode();
+  const [openBoard, setOpenBoard] = useState(false);
 
   const input = useMemo(() => {
     return inGame ? article : inputRef.current?.value;
@@ -166,7 +167,9 @@ export default function Home() {
                       <p className="block text-lg font-medium text-gray-900 dark:text-white">
                         Score: {Math.round(response.similarity * 1000)}
                       </p>
-                      <Leaderboard />
+                      <p className="text-lg font-medium text-blue-600 dark:text-blue-500 hover:underline cursor-pointer" onClick={() => setOpenBoard(true)}>
+                        Join Leaderboard
+                      </p>
                     </>
                   )}
                 </div>
@@ -175,6 +178,7 @@ export default function Home() {
           </div>
         </div>
       </div>
+      <Leaderboard open={openBoard} setOpen={setOpenBoard} />
     </main>
   );
 }
