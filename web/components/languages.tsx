@@ -106,7 +106,8 @@ export const Languages = ({
       ...languages,
       { ...language, id: `language-${languages.length}` },
     ]);
-  }, [languages, selected, setLanguages]);
+    setSelected(undefined);
+  }, [languages, selected, setLanguages, setSelected]);
 
   const onDelete = useCallback(
     (id: string) => {
