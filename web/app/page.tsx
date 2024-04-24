@@ -38,7 +38,18 @@ export default function Home() {
     return Math.round(response.similarity * 1000);
   }, [response]);
 
-  const { inGame, setInGame, article } = useGameMode();
+  const clear = useCallback(() => {
+    window.history.pushState(null, "", "/");
+    if (inputRef.current) {
+      inputRef.current.value = "";
+    }
+    setLanguages([]);
+    setLoading(false);
+    setError(undefined);
+    setFreshResponse(undefined);
+  }, []);
+
+  const { inGame, setInGame, article } = useGameMode({ clear });
   const [openBoard, setOpenBoard] = useState(false);
 
   const input = useMemo(() => {
@@ -76,17 +87,6 @@ export default function Home() {
     setFreshResponse(data);
     setLoading(false);
   }, [inGame, input, languages, searchParams]);
-
-  const clear = useCallback(() => {
-    window.history.pushState(null, "", "/");
-    if (inputRef.current) {
-      inputRef.current.value = "";
-    }
-    setLanguages([]);
-    setLoading(false);
-    setError(undefined);
-    setFreshResponse(undefined);
-  }, []);
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-4 md:p-8">

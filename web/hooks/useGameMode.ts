@@ -7,7 +7,7 @@ type Article = {
   summary: string;
 };
 
-export const useGameMode = () => {
+export const useGameMode = ({ clear }: { clear: () => void }) => {
   const [inGame, setInGame] = useState(false);
   const [article, setArticle] = useState<Article>();
   const [loading, setLoading] = useState(false);
@@ -25,10 +25,10 @@ export const useGameMode = () => {
       if (value && !article && !loading) {
         fetchArticle();
       }
-      window.history.pushState(null, "", "/");
+      clear();
       setInGame(value);
     },
-    [article, fetchArticle, loading]
+    [article, clear, fetchArticle, loading]
   );
 
   return { inGame, setInGame: ourSetInGame, article };
