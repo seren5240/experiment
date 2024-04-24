@@ -16,7 +16,7 @@ export const Leaderboard = ({
   translation_id: string;
 }) => {
   const nameRef = useRef<HTMLTextAreaElement>(null);
-  const { scores, addScore, loading } = useLeaderboard({
+  const { scores, addScore, ourScore, loading } = useLeaderboard({
     article_id,
     translation_id,
   });
@@ -52,7 +52,10 @@ export const Leaderboard = ({
               </thead>
               <tbody>
                 {scores.map((score, index) => (
-                  <tr key={score.id}>
+                  <tr
+                    key={score.id}
+                    className={score.id === ourScore ? "bg-yellow-200" : ""}
+                  >
                     <td>{index + 1}</td>
                     <td>{score.name}</td>
                     <td>{score.score}</td>

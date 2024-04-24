@@ -180,5 +180,6 @@ async def add_score(
                 "translation_id": str(item.translation_id),
             }
             for item in leaderboard
-        ]
+        ],
+        "added": id,
     }

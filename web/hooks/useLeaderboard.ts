@@ -17,6 +17,7 @@ export const useLeaderboard = ({
   translation_id: string;
 }) => {
   const [scores, setScores] = useState<Score[]>();
+  const [ourScore, setOurScore] = useState<string>();
   const [loading, setLoading] = useState(false);
 
   const addScore = useCallback(
@@ -32,9 +33,10 @@ export const useLeaderboard = ({
       const data = await res.json();
       setLoading(false);
       setScores(data.leaderboard);
+      setOurScore(data.added);
     },
-    [article_id, translation_id]
+    [article_id, translation_id],
   );
 
-  return { scores, addScore, loading };
+  return { scores, addScore, ourScore, loading };
 };

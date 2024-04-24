@@ -53,3 +53,4 @@ class ScoreItem(BaseModel):
 
 class ScoreResponse(BaseModel):
     leaderboard: List[ScoreItem]
+    added: str
