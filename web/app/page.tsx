@@ -119,9 +119,11 @@ export default function Home() {
           </div>
           <div className="z-10 max-w-6xl w-full items-start justify-between font-sans text-sm lg:flex flex-col gap-4 flex overflow-auto">
             {inGame ? (
-              <div className="flex-col items-start justify-between w-full">
-                <Error error={error} />
-              </div>
+              error && (
+                <div className="flex-col items-start justify-between w-full">
+                  <Error error={error} />
+                </div>
+              )
             ) : (
               <div className="flex-col items-start justify-between w-full">
                 <label
@@ -138,7 +140,9 @@ export default function Home() {
                   ref={inputRef}
                   disabled={loading || loadingStored}
                 />
-                <Error error={error} />
+                <div className="mt-3">
+                  <Error error={error} />
+                </div>
               </div>
             )}
             <div className="flex-col items-start justify-between w-full">
