@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import ClickAwayListener from "react-click-away-listener";
 
 export type DropdownOption = {
@@ -12,16 +12,23 @@ export const Dropdown = ({
   setSelected,
 }: {
   options: DropdownOption[];
-    selected: DropdownOption | undefined;
-    setSelected: React.Dispatch<React.SetStateAction<DropdownOption | undefined>>;
+  selected: DropdownOption | undefined;
+  setSelected: React.Dispatch<React.SetStateAction<DropdownOption | undefined>>;
 }) => {
   const [open, setOpen] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const filteredOptions = useMemo(() => {
     return options.filter((option) =>
-      option.name.toLowerCase().includes(searchValue.toLowerCase())
+      option.name.toLowerCase().includes(searchValue.toLowerCase()),
     );
   }, [options, searchValue]);
+
+  const inputRef = useRef<HTMLInputElement>(null);
+  useEffect(() => {
+    if (open) {
+      inputRef.current?.focus();
+    }
+  }, [open]);
 
   return (
     <ClickAwayListener onClickAway={() => setOpen(false)}>
@@ -58,7 +65,8 @@ export const Dropdown = ({
           <input
             className="p-2 text-sm text-gray-900 dark:text-gray-200 border-b border-gray-200 m-2"
             placeholder="Search..."
-           onChange={(e) => setSearchValue(e.target.value)}
+            onChange={(e) => setSearchValue(e.target.value)}
+            ref={inputRef}
           />
           <ul
             className="py-2 text-sm text-gray-700 dark:text-gray-200"
