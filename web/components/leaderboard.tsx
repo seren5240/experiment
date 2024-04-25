@@ -1,6 +1,6 @@
 import { useLeaderboard } from "@/hooks/useLeaderboard";
 import { XMarkIcon } from "@heroicons/react/16/solid";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { EllipsisVerticalIcon } from "@heroicons/react/16/solid";
 
 export const Leaderboard = ({
@@ -17,10 +17,17 @@ export const Leaderboard = ({
   translation_id: string;
 }) => {
   const nameRef = useRef<HTMLTextAreaElement>(null);
+
   const { scores, addScore, ourScore, loading } = useLeaderboard({
     article_id,
     translation_id,
   });
+
+  useEffect(() => {
+    if (open && !scores) {
+      nameRef.current?.focus();
+    }
+  }, [open, scores]);
 
   if (!open) {
     return null;
