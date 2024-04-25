@@ -56,7 +56,12 @@ export const Leaderboard = ({
                     key={score.id}
                     className={score.id === ourScore ? "bg-yellow-200" : ""}
                   >
-                    <td>{index + 1}</td>
+                    <td>
+                      {Math.max(
+                        scores.findLastIndex((s) => s.score > score.score) + 2,
+                        1,
+                      )}
+                    </td>
                     <td>{score.name}</td>
                     <td>{score.score}</td>
                   </tr>
