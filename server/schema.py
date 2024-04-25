@@ -49,7 +49,10 @@ class ScoreItem(BaseModel):
     translation_id: str
 
 
+class RankedScoreItem(ScoreItem):
+    placement: int
+
+
 class ScoreResponse(BaseModel):
     leaderboard: List[ScoreItem]
-    added: str
-    placement: int
+    added: RankedScoreItem

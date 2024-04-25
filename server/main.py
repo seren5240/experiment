@@ -163,12 +163,15 @@ async def add_score(
     score: ScoreRequest, db: AsyncSession = Depends(get_db_session)
 ) -> ScoreResponse:
     id = str(uuid.uuid4())
+    name = score.name
+    our_score = score.score
+    translation_id = score.translation_id
     score = Score(
         id=id,
-        name=score.name,
-        score=score.score,
+        name=name,
+        score=our_score,
         article_id=score.article_id,
-        translation_id=score.translation_id,
+        translation_id=translation_id,
     )
     leaderboard, placement = await update_leaderboard(db, score)
     return {
@@ -181,6 +184,11 @@ async def add_score(
             }
             for item in leaderboard
         ],
-        "added": id,
-        "placement": placement,
+        "added": {
+            "id": id,
+            "name": name,
+            "score": our_score,
+            "translation_id": translation_id,
+            "placement": placement,
+        },
     }
