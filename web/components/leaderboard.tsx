@@ -51,7 +51,7 @@ export const Leaderboard = ({
                 </tr>
               </thead>
               <tbody>
-                {scores.map((score, index) => (
+                {scores.map((score) => (
                   <tr
                     key={score.id}
                     className={score.id === ourScore ? "bg-yellow-200" : ""}
