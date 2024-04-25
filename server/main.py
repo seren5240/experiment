@@ -170,7 +170,7 @@ async def add_score(
         article_id=score.article_id,
         translation_id=score.translation_id,
     )
-    leaderboard = await update_leaderboard(db, score)
+    leaderboard, placement = await update_leaderboard(db, score)
     return {
         "leaderboard": [
             {
@@ -182,4 +182,5 @@ async def add_score(
             for item in leaderboard
         ],
         "added": id,
+        "placement": placement,
     }

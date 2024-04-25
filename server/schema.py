@@ -1,8 +1,6 @@
 from typing import List
 from pydantic import BaseModel
 
-from model.base import Score
-
 
 class TranslationRequest(BaseModel):
     text: str
@@ -54,3 +52,4 @@ class ScoreItem(BaseModel):
 class ScoreResponse(BaseModel):
     leaderboard: List[ScoreItem]
     added: str
+    placement: int
