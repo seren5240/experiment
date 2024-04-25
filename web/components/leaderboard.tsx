@@ -1,6 +1,7 @@
 import { useLeaderboard } from "@/hooks/useLeaderboard";
 import { XMarkIcon } from "@heroicons/react/16/solid";
 import { useRef } from "react";
+import { EllipsisVerticalIcon } from "@heroicons/react/16/solid";
 
 export const Leaderboard = ({
   open,
@@ -54,7 +55,7 @@ export const Leaderboard = ({
                 {scores.map((score) => (
                   <tr
                     key={score.id}
-                    className={score.id === ourScore ? "bg-yellow-200" : ""}
+                    className={score.id === ourScore?.id ? "bg-yellow-200" : ""}
                   >
                     <td>
                       {Math.max(
@@ -66,6 +67,20 @@ export const Leaderboard = ({
                     <td>{score.score}</td>
                   </tr>
                 ))}
+                {ourScore && scores.every((s) => s.id !== ourScore.id) && (
+                  <>
+                    <tr>
+                      <td colSpan={3} className="items-center">
+                        <EllipsisVerticalIcon className="h-6 w-6 left-auto right-auto w-full m-1" />
+                      </td>
+                    </tr>
+                    <tr className="bg-yellow-200">
+                      <td>{ourScore.placement}</td>
+                      <td>{ourScore.name}</td>
+                      <td>{ourScore.score}</td>
+                    </tr>
+                  </>
+                )}
               </tbody>
             </table>
           </div>

@@ -9,6 +9,10 @@ interface Score {
   translation_id: string;
 }
 
+interface RankedScore extends Score {
+  placement: number;
+}
+
 export const useLeaderboard = ({
   article_id,
   translation_id,
@@ -17,7 +21,7 @@ export const useLeaderboard = ({
   translation_id: string;
 }) => {
   const [scores, setScores] = useState<Score[]>();
-  const [ourScore, setOurScore] = useState<string>();
+  const [ourScore, setOurScore] = useState<RankedScore>();
   const [loading, setLoading] = useState(false);
 
   const addScore = useCallback(
@@ -35,7 +39,7 @@ export const useLeaderboard = ({
       setScores(data.leaderboard);
       setOurScore(data.added);
     },
-    [article_id, translation_id],
+    [article_id, translation_id]
   );
 
   return { scores, addScore, ourScore, loading };
